@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta charset="utf-8">
+        <title>Prc, we are moving forward</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/sign_up_page.css')}}">
+        <meta name="viewport" content="width='device-width' initial-scale=1">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+
+
+    </head>
+
+    <body>
+
+        <nav class="topnav">
+            <a class="active" href="/"><b>Back</b></a>
+            
+        </nav>
+
+
+        
+
+        
+        <div class="my-container">
+
+
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+      
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                {% endfor%}
+      
+            {% endif %}
+            
+            {% endwith %}
+          
+
+
+
+
+
+            <h1>Sign Up Page</h1>
+
+            
+            <form action="" id="signup"  class="form"  method="POST">
+
+
+                <div class="form-field">
+                    <label for="firstname"> <b>Firstname:</b> </label>
+                    <input type="text" id="firstname" name="firstname"  placeholder="Firstname Here" required>
+
+
+                    <label id="lastname" for="lastname"> <b>Lastname:</b> </label>
+                    <input type="text"  name="lastname" placeholder="Lastname Here" required>
+                    <br>
+                    <br>
+                </div>
+
+
+                <div class="form-field">
+                    <label for="date" class="day"><b>Date of Birth:</b> </label> 
+                    
+                    <input type="text"  id="day" name="day" placeholder="DD">
+                
+                    
+                    <select name="month" id="month" required>
+                        <option value="none">     </option>
+                        <option value="jan">January</option>
+                        <option value="feb">February</option>
+                        <option value="mar">March</option>
+                        <option value="apr">April</option>
+                        <option value="may">May</option>
+                        <option value="jun">June</option>
+                        <option value="jul">July</option>
+                        <option value="aug">August</option>
+                        <option value="sept">September</option>
+                        <option value="oct">October</option>
+                        <option value="nov">November</option>
+                        <option value="dec">December</option>
+                    </select>
+  
+                    <input type="text" id="year" name="year" placeholder="YYYY"  required>
+                    <br>
+                    <br>
+                
+                </div>
+                
+                
+                <label id="sexes"  for="sex"> <b>Sex:</b> </label>
+                <select name="sex" id="sex" required>
+                    <option value="empty">     </option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+
+                
+
+
+                
+                
+
+                <label  id="marry" for="marry"> <b>Marital Status: </b></label>
+                <select name="marry" id="marry1" required>
+                    <option value="empty">    </option>
+                    <option value="married">Married</option>
+                    <option value="single">Single</option>
+                </select>
+                    <br>
+                    <br>
+                    <br>
+
+
+                    <div class="form-field">
+                        <label for="contact"> <b>Contact:</b> </label>
+                        <input type="text" id="contact" name="contact"  placeholder="eg:0240000000" required>
+            
+                        <br>
+                        <br>
+            
+                    </div>
+
+
+
+
+                <div class="form-field">
+                    
+                    <label id="username1" for="username"><b>Username:</b> </label>
+                    <input type="text" id="username" name="username" autocomplete="off" placeholder="eg:Akietorna" >
+                    <small></small>
+
+
+                    <label id="e_mail" for="email"><b>E-mail address:</b> </label>
+                    <input type="email" id="email" name="email" autocomplete="off" placeholder="eg:akietorna@gmail.com">
+                    <small></small>
+                </div>
+
+
+                <br>
+                <br>
+
+
+                    
+
+                <div class="form-field ">
+
+                    <label  for="password"><b>New Password:</b> </label>
+                    <input type="password" id="password" name="password" placeholder="New password here">
+                    <small></small>
+                   
+                
+                    <label id="pass_word"  for="password"><b>Confirm password:</b> </label>
+                    <input type="password" id="confirm_password" name="password" placeholder="Type the password again">
+                    <br>
+                    <br>
+
+                    <input type="submit" id="submit" value="Submit" name="submit">
+                
+                </div>
+
+                
+            </form>
+        </div>
+
+
+
+
+
+
+
+        <script src="{{ url_for('static', filename='js/validation.js') }} "></script>
+        <script src=" {{ url_for('static', filename='js/jquery-3.5.1.slim.min.js')}} "></script>
+          
+    </body>
+</html>

@@ -1,0 +1,210 @@
+body{
+  background-color: rgb(194, 190, 255);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1{
+  text-align: center;
+}
+
+#group-message-recieved{
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+
+#message-recieved{
+  max-width: 75%;
+  margin: 2px 0;
+  display: flex;
+}
+
+
+
+#message-recieved-test> p{
+  background-color:rgb(19, 206, 109) ;
+  border-radius: 4px 20px 20px 4px;
+  min-height: 20px;
+  padding: 20px;
+ 
+}
+
+#group-message-sent{
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+#message-sent{ 
+  max-width: 75%;
+  margin: 2px 0 2px auto;
+  display: flex;
+}
+
+#message-sent-test{
+
+margin-top: 20px;
+margin-left: auto;
+margin-bottom: 60px;
+
+}
+
+#message-sent-test > p{
+  background-color:rgb(19, 206, 109) ;
+  border-radius: 20px 4px 4px 20px;
+  min-height: 20px;
+  padding: 20px;
+ 
+}
+
+
+
+#message-box{
+  width: 1100px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: rgb(248, 213, 213);
+  margin-left: auto;
+}
+
+#send-message{
+  color: white;
+  background-color: rgb(12, 12, 90);
+  border-radius: 8px;
+  width: 60px;
+  height: 52px;
+  margin-left: 30px;
+}
+
+
+@media screen and (max-width:600px){ 
+
+  #message-box{
+    
+    width: 250px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+    
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: -30px;
+  }
+  
+}
+
+@media screen and (min-width:700px) and (max-width:1200px){ 
+
+  #message-box{
+    
+    width: 550px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+   
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: 50px;
+  }
+  
+}
+
+@media screen and (width:320px){ 
+
+  #message-box{
+    
+    width: 210px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+    
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: 50px;
+  }
+  
+}
+
+@media screen and (width:540px) { 
+
+  #message-box{
+    
+    width: 420px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+   
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: 50px;
+  }
+  
+}
+
+@media screen and (width:1024px){
+  #message-box{
+    
+    width: 900px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+   
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: 50px;
+  }
+  
+}
+
+@media screen and (width:280px) { 
+
+  #message-box{
+    
+    width: 150px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: rgb(248, 213, 213);
+    margin-left: -30px;
+  }
+  
+  #send-message{
+   
+    color: white;
+    background-color: rgb(12, 12, 90);
+    border-radius: 8px;
+    width: 60px;
+    height: 50px;
+  }
+  
+}

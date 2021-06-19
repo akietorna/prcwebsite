@@ -1,0 +1,63 @@
+.navigation {
+    background-color:rgb(233, 229, 229);
+
+}
+
+*{box-sizing: border-box;}
+  
+  body {font-family: Verdana, sans-serif;
+    text-align: center;
+  }
+  
+  
+  
+  /* Slideshow container */
+  
+  
+  .active {
+    background-color: #717171;
+  }
+  
+  /* Fading animation */
+  
+  h2{
+    text-align: center;
+    font-family: cursive;
+    margin-bottom: 50px;
+  }
+  
+  
+.text {
+    font-size: 30px;
+    color:yellow;
+    padding: 8px  12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    
+}
+
+/* #button{
+    color: white;
+    padding-right: 20px;
+    background-color:white;
+} */
+
+#navigate:hover {
+    color:blue ;
+}
+
+#navbarDropdown:hover {
+    color:blue ;
+}
+
+#navigate:active {
+    color:white ;
+    background-color: blue;
+}
+
+#navbarDropdown:active {
+    color:white ;
+    background-color: blue;
+}

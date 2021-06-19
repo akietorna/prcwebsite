@@ -1,0 +1,266 @@
+:root{
+    --error-color: #dc3545;
+    --success-color:#28a745;
+    --warning-color:yellow;
+}
+
+body{
+    background-image: url('/static/images/003.3.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    font-family: cursive;
+}
+
+
+
+
+.topnav {
+    background-color:transparent;
+    width: 1500px;
+    height: 28px; 
+    overflow: auto;
+
+}
+
+.topnav a{
+    float: left;
+    color: white;
+    text-align: right;
+    padding: 10px 20px;
+    text-decoration: white;
+    font-size: 17px;
+}
+
+h1{
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color:white;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.my-container{
+    text-align: center;
+    margin-top: 40px;
+    border-radius: 10px;
+    background-color: rgb(155, 155, 243);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: 190px;
+    margin-bottom: 70px;
+    margin-right: 170px;
+
+}
+
+#day{
+    width: 50px;
+
+}
+
+#year{
+    width: 60px;
+}
+
+#service{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#status{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#position{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#dept{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#depart{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#pos{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#submit{
+    background-color: blue;
+    color: white;
+    font-family: cursive;
+    margin-left: 80px;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+
+
+
+#new{
+    padding-bottom: 5px;
+}
+
+
+
+.form-field label{
+    color:white;
+}
+
+.form-field input{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+
+}
+
+.form-field input:focus{
+    outline:blue;
+}
+
+.form-field.error input{
+    border-color: var(--error-color);
+}
+
+.form-field.success input{
+    border-color:var(--success-color);
+}
+
+.form-field small{
+    color: var(--warning-color);
+}
+
+#lastname{
+    margin-left: 30px;
+    
+}
+
+#marry{
+    margin-left: 30px;
+    color:white;
+    
+}
+
+#marry1{
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+    
+}
+
+#sex{
+   
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#sexes{
+    color: white;
+}
+
+#month{
+   
+    border: solid 2px rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+#e_mail{
+    margin-left: 30px;
+}
+
+
+#pass_word{
+    margin-left: 30px;
+}
+
+@media only screen and (max-width:600px){
+    .my-container{
+        text-align: center;
+        margin-top: 40px;
+        border-radius: 10px;
+        background-color: rgb(155, 155, 243);
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-left: 0px;
+        margin-bottom: 70px;
+        margin-right: 0px;
+    
+    }
+
+
+    .day1{
+        margin-left:85px;
+        margin-right: 80px;
+    }
+
+    #day3{
+        margin-left:105px;
+        margin-right: 100px;
+    }
+
+    .day{
+        margin-left:105px;
+        margin-right: 100px;
+    
+    }
+
+    #day2{
+        margin-right: 50px;
+        margin-left: 50px;
+    }
+    
+    #sexes{
+        margin-left: 80px;
+    }
+
+    #sex{
+        margin-right: 130px;
+        margin-bottom: 20px;
+    }
+
+    #marry{
+        margin-top: 20px;
+        margin-left: -30px;
+        
+    }
+
+    #username{
+        margin-right: 30px;
+        margin-bottom: 10px;
+    }
+
+    #username1{
+        margin-left:0px;
+    }
+
+    #pass_word{
+        margin-left: -10px;
+    }
+
+    #e_mail{
+        margin-left: 10px;
+    }
+}

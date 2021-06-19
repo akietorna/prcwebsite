@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Prc, we are moving forward</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/beginning.css')}}">
+        <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}"> -->
+        <meta name="viewport" content="width='device-width' initial-scale=1">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        
+    </head>
+    
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <a class="navbar-brand" id="navigate" href="/sign_up_page/">Sign Up</a>
+            <button class="navbar-toggler" id="toggleNav" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon white"></span>
+            </button>
+
+
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item  navbar-brand">
+              <a class="nav-link"  id="navigate" href="#">Learn More <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item  navbar-brand">
+                  <a class="nav-link"  id="navigate" href="#">About Us <span class="sr-only">(current)</span></a>
+              </li>
+              
+              <li class="nav-item  navbar-brand">
+                  <a class="nav-link"  id="navigate" href="#">Contact Us<span class="sr-only">(current)</span></a>
+              </li>
+
+          </ul>
+         
+          </div>  
+
+    </nav>   
+    </header>
+        
+
+        <body >
+
+        <br>
+        <br>
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+           
+            {{ message }} 
+        </div>
+    {% endfor%}
+
+{% endif %}
+
+{% endwith %}
+
+
+
+               
+
+        <div class="prc"> <p id="begin" > <img src=" {{url_for('static', filename = 'images/qwerty.png')}} " alt="prcag"></p>
+            <p id="begin-1" ><strong><i>Pentecostal Revival Center</i></strong></p>
+
+
+            <form   action="{{ url_for('home_page') }}" method="POST"  >
+                <h5>Username:</h5>
+                <input type="text" name="username" id="email"  placeholder="Enter your email here" value="" >
+                <br>
+                <br>
+
+                <h5>Password:</h5>
+                <input type="password" name="password" id="password" placeholder="Enter your password here" value="" required>
+
+                <br>
+
+                <a id="fpassword" href="/forget_password/"> <small><u>Forgot password?</u></small></a> 
+                <br>
+                <input type="submit" name="submit" id="submit" value="Log In">
+               
+            </form>
+
+            
+
+        </div>
+
+     
+
+
+
+
+        <script src=" {{ url_for('static', filename='js/jquery-3.5.1.slim.min.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/bootstrap.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/bootstrap.min.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/popper.min.js')}} "></script>
+      </body> 
+    </body>
+
+    
+</html>

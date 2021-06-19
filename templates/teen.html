@@ -1,0 +1,91 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>PRC, we are moving forward</title>
+      <link rel="stylesheet" href="{{url_for('static', filename='css/Announcements.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+      <meta name="viewport" content="width='device-width' initial-scale=1">
+      <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+      
+        
+        
+    </head>
+
+    {%extends "navigation.html" %}
+
+    <body>
+
+      {% block content %}
+      
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      
+
+
+      <h2><strong>Teen Announcements </strong></h2>
+
+      <br>
+     <br>
+     
+     <div class="container col-lg-9 col-md-9 col-sm-9 col-xs-9">
+
+     <!-- Slideshow container -->
+      <div class="slideshow-container">
+
+        <!-- Full-width images with number and caption text -->
+        <div class="mySlides fade">
+          <div class="numbertext">1 / 5</div>
+          <img src="{{url_for('static', filename='images/photo-1469228252629-cbe7cb7db2c8.jpeg')}}" style="width:100%">
+          
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">2 / 5</div>
+          <img src="{{url_for('static', filename='images/photo-1438232992991-995b7058bbb3.jpeg')}}" style="width:100%">
+         
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">3 / 5</div>
+          <img src="{{url_for('static', filename='images/1_dUCe3N56V-VeAqF1ZWwjtA.jpeg')}}" style="width:100%">
+         
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">4 / 5</div>
+          <img src="{{url_for('static', filename='images/32541d75f645d0e28bd58b1017670236.jpg')}}" style="width:100%">
+          
+        </div>
+
+        <div class="mySlides fade">
+          <div class="numbertext">5 / 5</div>
+          <img src="{{url_for('static', filename='images/37482-woman-reading-bible-outside-1200.1200w.tn.jpg')}}" style="width:100%">
+         
+        </div>
+
+      </div>
+      <br>
+
+      <!-- The dots/circles -->
+      <div style="text-align:center">
+        <span class="dot" ></span>
+        <span class="dot" ></span>
+        <span class="dot" ></span>
+        <span class="dot" ></span>
+        <span class="dot" ></span>
+      </div>
+
+      </div>
+
+        {% endblock %}
+        
+    </body>
+
+    
+    
+</html>

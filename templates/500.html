@@ -1,0 +1,44 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PRC, we are moving forward</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <meta name="viewport" content="width='device-width' initial-scale=1">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+        
+    </head>
+
+    {% extends "navigation.html" %}
+
+    <body>
+        {% block content %}
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div id="thanks" class="container col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <img  src="{{url_for('static', filename='images/download.jpg')}}" style="width:20%">
+
+        </div>
+
+        
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <p style="font-size: 20px;
+            font-family: cursive;
+            color: rgb(40, 40, 122);
+            text-align: center;">
+
+           Ooops The page you requested doesn't <br> exit or there is an error <br> somewhere. Kindly go back and <br> resolve it</p>
+
+            
+        </p>
+        {% endblock %}
+    </body>

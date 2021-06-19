@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/users.css')}}">
+    </head>
+    {%extends 'admin.html'%}
+    <body>
+        
+        {%block body%}
+
+            <h3 style="margin-top: 70px; text-align: center;"><strong>List of users</strong></h3>
+
+
+            <table>
+                <thead >
+                    <tr>
+                        <th>User ID</th>
+                        <th>firstname </th>
+                        <th> lastname </th>
+                        <th> day </th>
+                        <th> month </th>
+                        <th> year </th>
+                        <th> sex </th>
+                        <th> marital_status </th>
+                        <th> username </th>
+                        <th> email </th>
+                        <th> password </th>
+                        <th>settings</th>
+                        <th> tracking</th>
+                        <th>grade</th>
+                        <th>day_joined_church </th>
+                        <th> month_joined_church </th>
+                        <th> year_joined_church </th>
+                        <th>day_of_baptism </th>
+                        <th> month_of_baptism </th>
+                        <th> year_of_baptism</th>
+                        <th> department </th>
+                        <th> position </th>
+                        <th> department_1 </th>
+                        <th> postion_1 </th>
+                        <th> service </th>
+                        <th> status </th>
+                        <th> location </th>
+                        <th> house_number </th>
+                        <th> home_town</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    {% for row in value %}
+                    
+                    <tr>
+                        
+                        <td> {{row[0]}} </td>
+                        <td> {{row[1]}} </td>
+                        <td> {{row[2]}} </td>
+                        <td> {{row[3]}} </td>
+                        <td> {{row[4]}} </td>
+                        <td> {{row[5]}} </td>
+                        <td> {{row[6]}} </td>
+                        <td> {{row[7]}} </td>
+                        <td> {{row[8]}} </td>
+                        <td> {{row[9]}} </td>
+                        <td> {{row[10]}} </td>
+                        <td> {{row[11]}} </td>
+                        <td> {{row[12]}} </td>
+                        <td> {{row[13]}} </td>
+                        <td> {{row[14]}} </td>
+                        <td> {{row[15]}} </td>
+                        <td> {{row[16]}} </td>
+                        <td> {{row[17]}} </td>
+                        <td> {{row[18]}} </td>
+                        <td> {{row[19]}} </td>
+                        <td> {{row[20]}} </td>
+                        <td> {{row[21]}} </td>
+                        <td> {{row[22]}} </td>
+                        <td> {{row[23]}} </td>
+                        <td> {{row[24]}} </td>
+                        <td> {{row[25]}} </td>
+                        <td> {{row[26]}} </td>
+                        <td> {{row[27]}} </td>
+                        <td> {{row[28]}} </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+
+
+
+            <form action="/delete_user" style="margin-top: 40px; margin-left: 40px; " method="POST">
+                <a href="/add_users/"><input type="button" value="Add new user" style="border-radius: 5px; background-color: blue; color: white;"></a>
+                <input name="picked" style="margin-left: 10px;" type="text" placeholder="Enter the ID to delete " >
+                <input type="submit" value="Delete a user" style="border-radius: 5px; background-color: blue; color: white;">
+                
+            </form>
+            
+        {%endblock%}
+
+        
+    </body>
+</html>

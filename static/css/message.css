@@ -1,0 +1,77 @@
+.navbar {
+  background-color:rgb(128, 247, 217);
+
+}
+*{box-sizing: border-box;}
+  
+  body {font-family: Verdana, sans-serif;
+    text-align: center;
+  }
+ 
+  h2{
+    text-align: center;
+    font-family: cursive;
+    margin-bottom: 50px;
+  }
+  
+  
+.text {
+    font-size: 25px;
+    color:yellow;
+    padding: 8px  12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+    
+}
+#button{
+    color: white;
+    padding-right: 20px;
+}
+
+#navigate:hover {
+    color:blue ;
+}
+
+
+
+
+.messaging{
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-left: 30px;
+  margin-top: 40px;
+  height: 150px;
+  width: 150px;
+  margin-bottom: 50px;
+  overflow: hidden;
+
+
+}
+
+.messaging:hover{
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+#navbarDropdown:hover {
+    color:blue ;
+}
+
+#navigate:active {
+    
+    background-color: blue;
+}
+
+#navbarDropdown:active {
+    color:white ;
+    background-color: blue;
+}
+
+footer{
+    text-align: center;
+    background-color: rgb(25, 25, 34);
+    color:white;
+    margin-left: 50px ;
+    margin-right: 50px;
+}

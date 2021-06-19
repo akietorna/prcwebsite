@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8">
+        <title>Prc, we are moving forward</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/sign_up_page.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <meta name="viewport" content="width='device-width' initial-scale=1">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+
+    </head>
+<body>
+    <nav class="topnav">
+        <a class="active" href="/home/"><b>Home</b></a>
+        
+    </nav> 
+    
+   
+
+    <div class="my-container ">
+
+        <h1><strong>Edit Profile</strong> </h1>
+        <br> 
+
+    <form action="" id="ed_profile"  class="form"  method="POST">
+
+    <div class="form-field">
+
+        
+        <div class="form-field">
+            <label for="firstname"> <b>Firstname:</b> </label>
+            <input type="text" id="firstname" name="firstname"  placeholder="Firstname Here" required>
+
+            <br>
+            <br>
+
+            <label id="lastname" for="lastname"> <b>Lastname:</b> </label>
+            <input type="text"  name="lastname" placeholder="Lastname Here" required>
+            <br>
+            <br>
+        </div>
+        
+
+        
+
+
+
+        <div class="form-field">
+            <label for="date" class="day"><b>Date of Birth:</b> </label> 
+            
+            <input type="text"  id="day" name="day" placeholder="DD">
+        
+            
+            <select name="month" id="month" required>
+                <option value="none">     </option>
+                <option value="jan">January</option>
+                <option value="feb">February</option>
+                <option value="mar">March</option>
+                <option value="apr">April</option>
+                <option value="may">May</option>
+                <option value="jun">June</option>
+                <option value="jul">July</option>
+                <option value="aug">August</option>
+                <option value="sept">September</option>
+                <option value="oct">October</option>
+                <option value="nov">November</option>
+                <option value="dec">December</option>
+            </select>
+
+            <input type="text" id="year" name="year" placeholder="YYYY"  required>
+            <br>
+            <br>
+        
+        </div>
+        
+        
+        <label id="sexes"  for="sex"> <b>Sex:</b> </label>
+        <select name="sex" id="sex" required>
+            <option value="empty">     </option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        
+
+        <br>
+        <br>
+        
+        
+
+        <label  id="marry" for="marry"> <b>Marital Status: </b></label>
+        <select name="marry" id="marry1" required>
+            <option value="empty">    </option>
+            <option value="married">Married</option>
+            <option value="single">Single</option>
+        </select>
+            <br>
+            <br>
+            <br>
+
+
+            <div class="form-field">
+                <label for="contact"> <b>Contact:</b> </label>
+                <input type="text" id="contact" name="contact"  placeholder="eg:0240000000" required>
+    
+                <br>
+                <br>
+    
+            </div>
+
+
+
+
+        <div class="form-field">
+            
+            <label id="username1" for="username"><b>Username:</b> </label>
+            <input type="text" id="username" name="username" autocomplete="off" placeholder="eg:Akietorna" >
+            <small></small>
+
+            <br>
+            <br>
+
+
+            <label id="e_mail" for="email"><b>E-mail address:</b> </label>
+            <input type="email" id="email" name="email" autocomplete="off" placeholder="eg:akietorna@gmail.com">
+            <small></small>
+        </div>
+
+        <br>
+        <br>
+        <hr>
+
+
+        <label id="day2" for="date"><b>Date you joined the church:</b> </label> 
+        
+        <input type="text" id="day" name="day" placeholder="DD">
+    
+        
+        <select name="month" id="month" required>
+            <option value="none">     </option>
+            <option value="jan">January</option>
+            <option value="feb">February</option>
+            <option value="mar">March</option>
+            <option value="apr">April</option>
+            <option value="may">May</option>
+            <option value="jun">June</option>
+            <option value="jul">July</option>
+            <option value="aug">August</option>
+            <option value="sept">September</option>
+            <option value="oct">October</option>
+            <option value="nov">November</option>
+            <option value="dec">December</option>
+        </select>
+
+        <input type="text" id="year" name="year" placeholder="YYYY"  required>
+        <br>
+        <br>
+    
+    </div>
+
+    <div class="form-field">
+        <label id="day3" for="date"><b>Date of Baptism:</b> </label> 
+        
+        <input type="text" id="day" name="day_of_baptism" placeholder="DD">
+    
+        
+        <select name="month_of_baptism" id="month" required>
+            <option value="none">     </option>
+            <option value="jan">January</option>
+            <option value="feb">February</option>
+            <option value="mar">March</option>
+            <option value="apr">April</option>
+            <option value="may">May</option>
+            <option value="jun">June</option>
+            <option value="jul">July</option>
+            <option value="aug">August</option>
+            <option value="sept">September</option>
+            <option value="oct">October</option>
+            <option value="nov">November</option>
+            <option value="dec">December</option>
+        </select>
+
+        <input type="text" id="year" name="year_of_baptism" placeholder="YYYY"  required>
+        <br>
+        <br>
+    
+    </div>
+
+            
+    <div class="form-field">
+            <label for="dept"><b> Department(service in church):</b></label>
+            <select name="dept" id="dept">
+                <option value="Cboard">Church board</option>
+                <option value="Usher">Ushering</option>
+                <option value="music">Music</option>
+                <option value="orga">Organizing</option>
+                <option value="Tech">Technical</option>
+                <option value="sun_sch">Sunday School</option>
+                <option value="pray">Prayer</option>
+                <option value="evang">Evangelism</option>
+                <option value="none"> None</option>
+            </select>
+            <br>
+            <br>
+
+    </div>        
+
+
+    <div class="form-field">
+
+            <label for="position" id="name"><b>Position(service in church):</b></label>
+            <select name="position" id="position">
+                <option value="pastor">Pastor</option>
+                <option value="sece">Secretary</option>
+                <option value="treasurer">Treasurer</option>
+                <option value="leader">Leader</option>
+                <option value="teacher">Teacher</option>
+                <option value="member">Member</option>
+                <option value="rep">Representative</option>
+            </select>
+
+            <br>
+            <br>
+        </div>
+
+        <div class="form-field">
+            <label for="depart" id=""><b> Department:</b></label>
+            <select name="depart" id="depart">
+               <option value="youth">Youth</option>
+               <option value="men">Men</option>
+               <option value="women">Women</option>
+               <option value="teen">Teen</option>
+               <option value="children">Children</option>
+            </select>
+
+            <br>
+            <br>
+
+
+        </div>
+
+        <div class="form-field">
+            <label for="pos" id="name"><b> Position:</b></label>
+            <select name="pos" id="pos">
+                <option value="leader">Leader</option>
+                <option value="member">Member</option>
+            </select>
+
+            <br>
+            <br>
+        </div>   
+        
+        <div class="form-field">
+
+            <label for="service"><b>Service (Which service do you attend):</b></label>
+            <select name="service" id="service">
+                <option value="first">First</option>
+                <option value="second">Second</option>
+                <option value="both">Both</option>
+            </select>
+
+            <br>
+            <br>
+
+            
+        </div>
+
+        <div class="form-field">
+            <label for="status" id="name"><b> Status (attendance):</b></label>
+            <select name="status" id="status">
+                <option value="Active">Active</option>
+                <option value="dormant">Dormant</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+
+            <br>
+            <br>
+        </div>
+
+        <div class="form-field">
+            
+
+            <label for="loc" ><b>Location(Where you live):</b></label>
+            <input type="text" name="location" placeholder="eg: Aflao Gbugbla" id="location">
+            <br>
+            <br>
+        </div>
+
+        <div class="form-field">
+
+            <label for="house" id="name"><b> House number/GPS code:</b></label>
+            <input type="text" name="house" placeholder="eg:AS1-B 660 / VZ-0225-4838" id="house">
+
+            <br>
+            <br>
+        </div>
+
+        <div class="form-field">
+            <label for="home"><b>Home Town:</b></label>
+            <input type="text" name="home_town" placeholder="Soviepe" id="">
+    
+
+            <br>
+            <br>
+            <input type="submit" id="submit" value="Submit" name="submit">
+        </div>
+
+
+    </form>
+</div>
+
+</body>
+</html>

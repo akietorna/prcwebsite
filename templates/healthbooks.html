@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+    {% extends 'admin.html'%}
+
+<body >
+    {%block body%}
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-mid-12 col-sm-12 col-xs-12">
+                <h1>Upload Book</h1>
+
+                <form action="/healthbooks/" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label >Please select a book</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="healthbooks" id="audio">
+                            <label class="custom-file-label" for="healthbooks">select the book.....</label>
+                        </div>
+                    </div>
+            
+                    <button type="submit" class="btn btn-primary">Upload the Book</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    
+
+{%endblock%}
+</body>
+
+</html>

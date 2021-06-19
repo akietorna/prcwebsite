@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Prc, we are moving forward</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/beginning.css')}}">
+    <meta name="viewport" content="width='device-width' initial-scale=1">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    
+</head>
+
+
+
+<body >
+
+    <body style="
+            background-image: url('/static/images/PzHZVK.jpg');
+            background-repeat: no-repeat;
+            background-size:cover;
+            text-align: center;
+            height:100vh;
+            width:100vw;
+            
+        ">
+
+        <br>
+        <br>
+        <br>
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+           
+            {{ message }} 
+        </div>
+    {% endfor%}
+
+{% endif %}
+
+{% endwith %}
+
+
+
+               
+
+        <div class="prc"> <p style="
+                                    text-align: center;
+                                    margin-bottom: 0px;
+                                    margin-top: 90px; "> 
+                    <img src=" {{url_for('static', filename = 'images/qwerty.png')}} " alt="prcag">
+        </p>
+            <p style="color: rgb(17, 17, 6);
+            font-family: cursive;
+            text-align: center;
+            font-size: 30px;
+            margin-top:0px ;">Administration Page</p>
+
+
+            <form action=" {{url_for('users')}} " method="POST"  >
+                <h5>Username:</h5>
+                <input type="text" name="username" id="email"  placeholder="Enter your email here" value="" >
+                <br>
+                <br>
+
+                <h5>Password:</h5>
+                <input type="password" name="password" id="password" placeholder="Enter your password here" value="" required>
+                <br>
+                
+                <br>
+                <input type="submit" name="submit" id="submit" value="Log In">
+               
+            </form>
+
+            <a id="fpassword" href="#"> Forgot password?</a> 
+
+        </div>
+
+     
+
+
+
+
+        <script src=" {{ url_for('static', filename='js/jquery-3.5.1.slim.min.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/bootstrap.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/bootstrap.min.js')}} "></script>
+        <script src=" {{ url_for('static', filename='js/popper.min.js')}} "></script>
+      </body> 
+    </body>
+
+</body>
+
+</html>
+
+
+ 

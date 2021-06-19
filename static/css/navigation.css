@@ -1,0 +1,85 @@
+.navbar {
+    background-color:rgb(6, 40, 114);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+
+#navigate:hover {
+    color:orange ;
+}
+
+#addiction:hover {
+    color:orange ;
+}
+
+#navbarDropdown{
+    font-size:15px ;
+}
+  
+.dropdown:hover {
+    color: orange;
+}
+
+#button1{
+    width: 140px;
+  
+}
+
+footer{
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 300px;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: -50px;
+    text-align: center;
+    background-color: rgba(94, 94, 245, 0.623);
+    color:black;
+  }
+
+
+#ed{
+    color:blue;
+}
+
+
+#navigate a.active{
+  background-color: white;
+  color: rgb(109, 109, 240);
+}
+
+#addiction a.active{
+    background-color: white;
+    color: rgb(109, 109, 240);
+  }
+
+#navbarDropdown:hover {
+    color: orange;
+}
+#navbarDropdown.active{
+  background-color: white;
+  color: rgb(109, 109, 240);
+}
+
+#navigate{
+    color: white;
+    font-size: 16px;
+}
+
+#addiction{
+    color: white;
+    font-size: 16px;
+}
+  
+#dropdowncontainer{
+    background-color:rgb(6, 40, 114);
+    color: white;
+}
+
+
+  
+#logout{
+    color: white;
+  }

@@ -1,0 +1,43 @@
+
+{% extends "admin.html" %}
+
+
+{% block body %}
+
+<body style="text-align: center; background-color: rgb(250, 244, 193);">
+    
+
+    <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+        <br>
+        <br>
+        <br>
+
+        <br>
+
+
+        <h4><strong><u>Add New Post</u></strong> </h4>
+
+
+        
+        {% from "_formhelpers.html" import render_field %}
+            <form method="POST"  action="" role="">
+                <dl>
+                    
+                    {{ render_field(form.sender_name) }}
+                    {{ render_field(form.title) }}
+                    {{ render_field(form.passage) }}
+                    {{ render_field(form.message) }}
+                </dl>
+
+                <p><input type="submit" value="Submit Post" ></p>
+            </form>
+            {% if error %}
+                <p class="error"><strong>Error:</strong> {{error}} </p>
+            {% endif %}
+    </div>
+
+        
+    </body>
+{% endblock %}
+
+

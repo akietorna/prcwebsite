@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <title>chatting</title>
+</head>
+<body>
+
+   
+    <nav>
+
+    </nav>
+
+    <div id="main-section col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div id="group-message-recieved">
+
+               <div>
+                <div id="message-recieved">
+                    <div id="message-recieved-test">
+
+                        <form action="/index" method="post" name="timer" target="dummyframe">
+                            <input type="text" name="hour">
+                            <input type="text" name="min">
+                            <input type="text" name="seconds">
+                            <input type="submit" name="start_timer" value="Start timer">
+                            <input type="submit" name="stop_timer" value="Stop_timer">
+                        </form>
+                        
+                    </div>
+                </div>
+               </div>
+
+            </div>
+
+
+            <div id="group-message-sent">
+
+                <div>
+                 <div id="message-sent">
+                     <div id="message-sent-test">
+                        
+                     </div>
+                 </div>
+                </div>
+ 
+            </div>
+
+
+            <nav class="navbar  fixed-bottom" id="input-area">
+                <div class="container-fluid">
+                    <input type="text" id="message-box" name="messagebox" value="" placeholder="Type your message here" autocomplete="off"  >
+                    <button type="button" id="send-message" >Send</button>
+                </div>
+                
+            </nav>
+        
+
+
+    </div>
+
+    <script src=" {{url_for('static', filename='js/socket.io.min.js')}} "></script>
+    <script src=" {{url_for('static', filename='js/socketio.js')}} "></script>
+    <script src=" {{ url_for('static', filename='js/jquery-3.5.1.slim.min.js')}} "></script>
+    <script src=" {{ url_for('static', filename='js/bootstrap.js')}} "></script>
+    <script src=" {{ url_for('static', filename='js/bootstrap.min.js')}} "></script>
+    <script src=" {{ url_for('static', filename='js/popper.min.js')}} "></script>
+
+    <script type="text/javascript">
+        const username = ` {{ username|e }} `
+    </script>
+     
+</body>
+</html>

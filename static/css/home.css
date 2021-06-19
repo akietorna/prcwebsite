@@ -1,0 +1,251 @@
+
+*{box-sizing: border-box;}
+
+body {font-family: Verdana, sans-serif;
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+
+/* .numbertext{
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px  12px;
+  position: absolute;
+  top: 0;
+} */
+
+
+
+/* Fading animation */
+
+
+h2{
+  text-align: center;
+  font-family: cursive;
+  margin-bottom: 70px;
+}
+
+
+
+/* html,
+body,
+#intro{
+  height: 100%;
+  background-image: url('images/003.3.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+} */
+
+#intro{
+  min-height: 100%;
+  min-width: 1024px;
+
+  background-image: url('/static/images/003.3.jpg');
+  overflow: auto;
+  color:#fff;
+  width: 100%;
+  height: 700px;
+  background-size: cover;
+
+  top: 0;
+  left: 0;
+
+}
+
+
+
+
+
+.text {
+  font-size: 20px;
+  color:yellow;
+  padding: 8px  12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  
+}
+
+#ed{
+    color:blue;
+}
+
+
+#toopic{
+  background-color: yellow;  
+  color:blue;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 27px;
+}
+
+#toopics{
+  background-color: yellow;  
+  color:blue;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+#weekly{
+  font-family: cursive;
+  text-align: center;
+  background-color: rgb(4, 4, 61) ;
+  border-radius: 10px;
+  padding: 20px;
+
+}
+
+
+
+#leaders{
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 17px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
+#pastor{
+  text-align: center;
+  width: 100%;
+  height: 200px;
+  position: relative;
+  margin:0;
+
+}
+
+#welcome{
+  margin-top: 80px;
+  font-size: 24px;
+  text-align: center;
+}
+
+
+
+.leadership{
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin-left: 30px;
+  margin-bottom: 50px;
+  overflow: hidden;
+
+
+}
+
+.leadership:hover{
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.leading{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+#thanks{
+  text-align: center;
+}
+
+/* GLOBAL STYLES
+-------------------------------------------------- */
+/* Padding below the footer and lighter body text */
+
+
+
+
+/* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+/* Carousel base class */
+.carousel {
+  margin-bottom: 4rem;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+  bottom: 3rem;
+  z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel-item {
+  height: 32rem;
+}
+.carousel-item > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 32rem;
+}
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: 400;
+}
+.marketing .col-lg-4 p {
+  margin-right: .75rem;
+  margin-left: .75rem;
+}
+
+
+
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 40em) {
+  /* Bump up size of carousel content */
+  .carousel-caption p {
+    margin-bottom: 1.25rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+ 
+}
+@media only screen and (max-width:600px){
+  #weekly{
+    font-size: x-small;
+    padding: 0px;
+  }
+
+  #welcome{
+    text-align: center;
+    font-size: 16px;
+    margin-top: 50px;
+  }
+
+  h4{
+    font-size: 12px;
+  }
+
+  #toopics{
+    background-color: yellow;  
+    color:blue;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+}
+
