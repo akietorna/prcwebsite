@@ -12,6 +12,9 @@ import os
 from werkzeug.utils import secure_filename
 from flask_socketio import SocketIO,send, emit, join_room, leave_room
 from asgiref.wsgi import WsgiToAsgi
+import smtplib,ssl
+from email.mime.text import MIMEText
+import random
 
 
 app=Flask(__name__)
@@ -23,6 +26,65 @@ app.config['DEBUG'] = True
 #initializations
 bcrypt = Bcrypt()
 socketio = SocketIO(app)
+
+
+@app.route("/confirm_email/")
+def confirm_email():
+    try:
+        port = 465
+        stmp_server = "smtp.gmail.com"
+        
+        sender_email = "pentecostalrevivalcenterag@gmail.com"
+        receiver_email = str(session['email'])
+        name = session['lastname']
+        password = "revmoses1954"
+
+        msg = MIMEText(" Hello "+ name + " ! \n \n You signed up an account on the Pentecostal Revival center,AG website. \n To confirm that it was really you, please enter the confirmatory \n code  into the box provided. Thank you \n \n \t \t Confirmatory Code: "+ confirm_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
+
+        print("The process was sucessfulllhy")
+        confirm_code = ""
+        for a in range(0,7):
+            confirm_code = str(random.randint(0,9))
+
+       
+
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
+            server.login(sender_email,password)
+            server.sendmail(sender_email,receiver_email,message)
+
+        print('Mail sent')
+
+        form = ConfirmEmail(request.form)
+
+        if request.method =="POST" and form.validate():
+
+            confirmed_code = form.email.data
+
+        # inserting statements into the database
+            if confirmed_code == confirm_code:
+                input_statement = ("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" ) 
+                data = (thwart(session["firstname"]), thwart(session["lastname"]), thwart(session["day"]), thwart(session["month"]), thwart(session["year"]), thwart(session["sex"]),thwart(session["contact"]), thwart(session["marital_status"]), thwart(session["username"]), thwart(session["email"]), thwart(session["password"]) )
+                curs.execute( input_statement, data)
+
+                connect.commit()
+                flash("Thanks. Registration was succesfull!")
+                curs.close()
+                connect.close()
+                gc.collect()
+
+                session['logged_in'] = True
+                return redirect(url_for('home'))
+
+
+            return render_template("confirm_email.html" , form = form)
+
+        return render_template("confirm_email.html" , form = form)
+
+
+    except Exception as e:
+        return str(e)
 
 
 
@@ -54,6 +116,9 @@ class ResetPassword(Form):
     email = TextField('Enter your E-mail Address', [validators.Length(min=9, max=50)])
     username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
     home_town =  TextField('Enter the name of your hometown', [validators.Length(min=4, max=24)])
+
+class ConfirmEmail(Form):
+    Confirmation = TextField('Enter the Confirmatory Code', [validators.Length(min=4, max=24)])
 
 class SetPassword(Form):
     username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
@@ -954,31 +1019,32 @@ def sign_up_page():
 
             #taking in personal info
 
-            firstname = request.form['firstname']
-            lastname = request.form['lastname']
+            session["firstname"] = request.form['firstname']
+            session["lastname"] = request.form['lastname']
 
-            day = request.form['day']
-            month = request.form['month']
-            year = request.form['year']
+            session["day"] = request.form['day']
+            session["month"] = request.form['month']
+            session["year"] = request.form['year']
 
-            sex = request.form['sex']
+            session["sex"] = request.form['sex']
 
-            contact = request.form['contact']
+            session["contact"] = request.form['contact']
 
-            marital_status = request.form['marry']
+            session["marital_status"] = request.form['marry']
             
-            username = request.form['username']
+            session["username"] = request.form['username']
 
-            email = request.form['email']
+            session["email"] = request.form['email']
 
-            update = username
 
             bcrypt = Bcrypt()
 
-            password = bcrypt.generate_password_hash(request.form['password'])
+            session["password"] = bcrypt.generate_password_hash(request.form['password'])
 
             curs,connect = connection()
 
+            username = session["username"]
+            email = session["email"]
             # checking if the username matches that of another person
         
 
@@ -986,36 +1052,22 @@ def sign_up_page():
 
             check_mail = curs.execute("SELECT * FROM users WHERE email = %s ", [email])
 
+            connect.commit()
+            print("The process was sucessful")
+            curs.close()
+            connect.close()
+            gc.collect()
+
             if int(check_name) > 0:
                 flash("Username already used,please choose another one")
                 return render_template('sign_up_page.html')
 
-            elif int(check_mail) > 0:
-                flash("email already used,please choose another one")
-                return render_template('sign_up_page.html')
-
             else:
-
-
-              # inserting statements into the database
-                input_statement = ("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" ) 
-                data = (thwart(firstname), thwart(lastname), thwart(day), thwart(month), thwart(year), thwart(sex),thwart(contact), thwart(marital_status), thwart(username), thwart(email), thwart(password), thwart() )
-                curs.execute( input_statement, data)
-
-                connect.commit()
-                flash("Thanks. Registration was succesfull!")
-                curs.close()
-                connect.close()
-                gc.collect()
-
-                session['logged_in'] = True
-                session['username']  = username
-
-                return redirect(url_for('home'))
+                return redirect(url_for('confirm_email'))
 
 
             
-        return render_template("sign_up_page.html",)
+        return render_template("sign_up_page.html")
 
 
 
@@ -1073,7 +1125,7 @@ def ed_profile():
 
                 # updating the table
             # curs.execute("SELECT day_joined_church,month_joined_church,year_joined_church,department,position,department_1,postion_1,service,status,location,house_number,home_town] FROM users WHERE username = (%s)", [update])
-            curs.execute("UPDATE users SET firstname = (%s),lastname = (%s), day = (%s), month= (%s), year = (%s), sex = (%s), marital_status = (%s), username = (%s), email, day_joined_church = (%s),month_joined_church= (%s),year_joined_church= (%s),day_of_baptism=(%s),month_of_baptism=(%s),year_of_baptism=(%s),department= (%s),postion= (%s),department_1= (%s),position_1= (%s),service= (%s),status= (%s),location= (%s),house_number= (%s),home_town= (%s) WHERE username = (%s)", [day_joined_church,month_joined_church,year_joined_church,day_of_baptism,month_of_baptism,year_of_baptism,department,position,department_1,position_1,service,status,location,house_number,home_town,update])
+            curs.execute("UPDATE users SET firstname = (%s),lastname = (%s), day = (%s), month= (%s), year = (%s), sex = (%s), marital_status = (%s), username = (%s), email, day_joined_church = (%s),month_joined_church= (%s),year_joined_church= (%s),day_of_baptism=(%s),month_of_baptism=(%s),year_of_baptism=(%s),department= (%s),postion= (%s),department_1= (%s),position_1= (%s),service= (%s),status= (%s),location= (%s),house_number= (%s),home_town= (%s) WHERE username = (%s)", [day_joined_church,month_joined_church,year_joined_church,day_of_baptism,month_of_baptism,year_of_baptism,department,position,department_1,position_1,service,status,location,house_number,home_town,session["username"]])
             print('it was successfull')
             connect.commit()
             curs.close()
