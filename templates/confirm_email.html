@@ -20,12 +20,12 @@
 
         
         {% from "_formhelpers.html" import render_field %}
-            <form method="POST"  action="/forget_password/" role="">
+            <form method="POST"  action="/confirm_email/" role="">
                 <dl>
-                    {{ render_field(form.Confirmation) }}
+                    {{ render_field(form.confirmation) }}
                 </dl>
 
-                <p><input type="submit" value="Confirm" ></p>
+                <p><input type="submit" value="Sign Up" ></p>
             </form>
             {% if error %}
                 <p class="error"><strong>Error:</strong> {{error}} </p>

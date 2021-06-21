@@ -21,70 +21,74 @@ app=Flask(__name__)
 app.config['SECRET_KEY'] = "hispresence123@"
 app.config['DEBUG'] = True
 
-
-
+    
 #initializations
 bcrypt = Bcrypt()
 socketio = SocketIO(app)
 
+       
 
 @app.route("/confirm_email/")
 def confirm_email():
-    try:
-        port = 465
-        stmp_server = "smtp.gmail.com"
-        
-        sender_email = "pentecostalrevivalcenterag@gmail.com"
-        receiver_email = str(session['email'])
-        name = session['lastname']
-        password = "revmoses1954"
+    form = ConfirmEmail(request.form)
+    port = 465
+    stmp_server = "smtp.gmail.com"
+    
+    sender_email = "pentecostalrevivalcenterag@gmail.com"
+    receiver_email = str(session["email"])
+    name = session['lastname']
+    password = "revmoses1954"
 
-        msg = MIMEText(" Hello "+ name + " ! \n \n You signed up an account on the Pentecostal Revival center,AG website. \n To confirm that it was really you, please enter the confirmatory \n code  into the box provided. Thank you \n \n \t \t Confirmatory Code: "+ confirm_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
+    confirmation_code = ""
+    for a in range(0,7):
+        confirmation_code += str(random.randint(0,9))
 
-        print("The process was sucessfulllhy")
-        confirm_code = ""
-        for a in range(0,7):
-            confirm_code = str(random.randint(0,9))
+    msg = MIMEText(" Hello "+ name + " ! \n \n You signed up an account on the Pentecostal Revival center,AG website.To confirm that it was really you, please enter the confirmatory code  into the box provided. Thank you \n \n \t \t Confirmatory Code: "+ confirmation_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
+    msg['Subject'] = 'PRC AG website sign up email confirmation'
+    msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
+    msg['To'] = session["email"]
+    
 
-       
 
-        context = ssl.create_default_context()
+    print("The process was sucessfulllhy")
 
-        with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
-            server.login(sender_email,password)
-            server.sendmail(sender_email,receiver_email,message)
+    
 
+
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
+        server.login(sender_email,password)
+        server.sendmail(sender_email,receiver_email,msg.as_string())
         print('Mail sent')
 
-        form = ConfirmEmail(request.form)
 
-        if request.method =="POST" and form.validate():
+    if request.method =="POST" and form.validate():
 
-            confirmed_code = form.email.data
+        confirmed_code = form.confirmation.data
+    # inserting statements into the database
+        if confirmation_code == confirmed_code :
 
-        # inserting statements into the database
-            if confirmed_code == confirm_code:
-                input_statement = ("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" ) 
-                data = (thwart(session["firstname"]), thwart(session["lastname"]), thwart(session["day"]), thwart(session["month"]), thwart(session["year"]), thwart(session["sex"]),thwart(session["contact"]), thwart(session["marital_status"]), thwart(session["username"]), thwart(session["email"]), thwart(session["password"]) )
-                curs.execute( input_statement, data)
+            curs,connect = connection()
 
-                connect.commit()
-                flash("Thanks. Registration was succesfull!")
-                curs.close()
-                connect.close()
-                gc.collect()
+            input_statement = ("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" ) 
+            data = (thwart(session["firstname"]), thwart(session["lastname"]), thwart(session["day"]), thwart(session["month"]), thwart(session["year"]), thwart(session["sex"]),thwart(session["contact"]), thwart(session["marital_status"]), thwart(session["username"]), thwart(session["email"]), thwart(session["password"]) )
+            curs.execute( input_statement, data)
 
-                session['logged_in'] = True
-                return redirect(url_for('home'))
+            connect.commit()
+            flash("Thanks. Registration was succesfull!")
+            curs.close()
+            connect.close()
+            gc.collect()
 
+            session['logged_in'] = True
+            return redirect(url_for('home'))
 
-            return render_template("confirm_email.html" , form = form)
 
         return render_template("confirm_email.html" , form = form)
 
+    return render_template("confirm_email.html", form = form)
 
-    except Exception as e:
-        return str(e)
 
 
 
@@ -118,7 +122,7 @@ class ResetPassword(Form):
     home_town =  TextField('Enter the name of your hometown', [validators.Length(min=4, max=24)])
 
 class ConfirmEmail(Form):
-    Confirmation = TextField('Enter the Confirmatory Code', [validators.Length(min=4, max=24)])
+    confirmation = TextField('Enter the Confirmatory Code', [validators.Length(min=4, max=24)])
 
 class SetPassword(Form):
     username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
