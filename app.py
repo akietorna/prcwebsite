@@ -28,9 +28,8 @@ socketio = SocketIO(app)
 
        
 
-@app.route("/confirm_email/")
+@app.route("/confirm_email/", methods=["POST", "GET"])
 def confirm_email():
-    form = ConfirmEmail(request.form)
     port = 465
     stmp_server = "smtp.gmail.com"
     
@@ -43,17 +42,17 @@ def confirm_email():
     for a in range(0,7):
         confirmation_code += str(random.randint(0,9))
 
+    
+
     msg = MIMEText(" Hello "+ name + " ! \n \n You signed up an account on the Pentecostal Revival center,AG website.To confirm that it was really you, please enter the confirmatory code  into the box provided. Thank you \n \n \t \t Confirmatory Code: "+ confirmation_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
     msg['Subject'] = 'PRC AG website sign up email confirmation'
     msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
     msg['To'] = session["email"]
     
-
+    session["conf"] = confirmation_code
 
     print("The process was sucessfulllhy")
-
-    
-
+    print(confirmation_code)
 
     context = ssl.create_default_context()
 
@@ -62,18 +61,36 @@ def confirm_email():
         server.sendmail(sender_email,receiver_email,msg.as_string())
         print('Mail sent')
 
+    return redirect(url_for('confirm_coded'))
+    
 
+@app.route("/confirm_coded/", methods=["POST", "GET"])
+def confirm_coded():
+    form = ConfirmEmail(request.form)
     if request.method =="POST" and form.validate():
-
+        print('working')
         confirmed_code = form.confirmation.data
-    # inserting statements into the database
-        if confirmation_code == confirmed_code :
+        conf = session["conf"]
+        # inserting statements into the database
+        if confirmed_code == conf:
+            print("its done")
+            firstname = session["firstname"]
+            lastname=session["lastname"]
+            day= session["day"]
+            month=session["month"]
+            year=session["year"]
+            sex=session["sex"]
+            contact=session["contact"]
+            marital_status=session["marital_status"]
+            username=session["username"]
+            email = session["email"]
+            password = session["password"]
+
+            print('it worked')
 
             curs,connect = connection()
 
-            input_statement = ("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" ) 
-            data = (thwart(session["firstname"]), thwart(session["lastname"]), thwart(session["day"]), thwart(session["month"]), thwart(session["year"]), thwart(session["sex"]),thwart(session["contact"]), thwart(session["marital_status"]), thwart(session["username"]), thwart(session["email"]), thwart(session["password"]) )
-            curs.execute( input_statement, data)
+            curs.execute("INSERT INTO users (firstname,lastname, day, month, year, sex,tel_number, marital_status, username, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",([firstname],[lastname], [day],[month],[year],[sex],[contact],[marital_status],[username], [email], [password]) ) 
 
             connect.commit()
             flash("Thanks. Registration was succesfull!")
@@ -82,10 +99,12 @@ def confirm_email():
             gc.collect()
 
             session['logged_in'] = True
+
             return redirect(url_for('home'))
 
-
-        return render_template("confirm_email.html" , form = form)
+        else:
+            error = "Your credentials do not match, try again" 
+            return render_template('sign_up_page.html', error = error)
 
     return render_template("confirm_email.html", form = form)
 
@@ -270,7 +289,7 @@ def devotional():
         return render_template("devotional.html", value = data)
 
     except Exception as e:
-        return render_template('admin1.html', error = error , name=session['logged_in'])
+        return render_template('admin1.html', error = error , name=session['admin'])
     
 
 @app.route("/logout/")
@@ -356,10 +375,8 @@ def admin():
             
 
             if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['logged_in'] = True
                 session['username'] = request.form['username']
-                update = request.form['username']
-                # session['admin'] = True
+                session['admin'] = True
 
                 return redirect(url_for("users"))
 
@@ -395,7 +412,7 @@ def users():
         return render_template("users.html", value = data)
 
     except Exception as e:
-            return render_template('admin1.html', error = error , name=session['logged_in'])
+            return render_template('admin1.html', error = error , name=session['admin'])
 
 
 
@@ -530,7 +547,21 @@ def depression():
 @app.route('/general/',methods=["GET","POST"] )
 @login_required
 def general():
-    return render_template('general.html', name=session['logged_in'])
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM dailydevotion')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template('general.html', name=session['logged_in'])
+
+    except Exception as e:
+        return render_template('general.html', name=session['logged_in'])
+    
 
 @app.route('/health/',methods=["GET","POST"])
 @login_required
@@ -717,7 +748,7 @@ def spiritualbooks():
                 
             return redirect(url_for('spiritualbooks'))
 
-    return render_template('spiritualbooks.html', name=session['logged_in'])
+    return render_template('spiritualbooks.html', name=session['admin'])
 
 
 
@@ -766,7 +797,7 @@ def marriagebooks():
                 
             return redirect(url_for('marriagebooks'))
 
-    return render_template('marriagebooks.html', name=session['logged_in'])
+    return render_template('marriagebooks.html', name=session['admin'])
 
 
 
@@ -816,7 +847,7 @@ def sermons():
                 
             return redirect(url_for('sermons'))
 
-    return render_template('sermons.html', name=session['logged_in'])
+    return render_template('sermons.html', name=session['admin'])
 
   
 
@@ -865,7 +896,7 @@ def sundayschool1():
                 
             return redirect(url_for('sundayschool1'))
 
-    return render_template('sundayschool1.html', name=session['logged_in'])
+    return render_template('sundayschool1.html', name=session['admin'])
 
 
 
@@ -914,7 +945,7 @@ def prayerbooks():
                 
             return redirect(url_for('prayerbooks'))
 
-    return render_template('prayerbooks.html', name=session['logged_in'])
+    return render_template('prayerbooks.html', name=session['admin'])
 
 
 
@@ -963,7 +994,7 @@ def healthbooks():
                 
             return redirect(url_for('healthbooks'))
 
-    return render_template('healthbooks.html', name=session['logged_in'])
+    return render_template('healthbooks.html', name=session['admin'])
 
 
 @app.route('/inspirationalbooks/', methods=["GET","POST"]) 
@@ -1010,7 +1041,7 @@ def inspirationalbooks():
                 
             return redirect(url_for('inspirationalbooks'))
 
-    return render_template('inspirationalbooks.html', name=session['logged_in'])
+    return render_template('inspirationalbooks.html', name=session['admin'])
 
 
 
