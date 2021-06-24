@@ -51,9 +51,6 @@ def confirm_email():
     
     session["conf"] = confirmation_code
 
-    print("The process was sucessfulllhy")
-    print(confirmation_code)
-
     context = ssl.create_default_context()
 
     with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
@@ -68,12 +65,10 @@ def confirm_email():
 def confirm_coded():
     form = ConfirmEmail(request.form)
     if request.method =="POST" and form.validate():
-        print('working')
         confirmed_code = form.confirmation.data
         conf = session["conf"]
         # inserting statements into the database
         if confirmed_code == conf:
-            print("its done")
             firstname = session["firstname"]
             lastname=session["lastname"]
             day= session["day"]
@@ -136,9 +131,7 @@ class RegistrationForm(Form):
 
 
 class ResetPassword(Form):
-    email = TextField('Enter your E-mail Address', [validators.Length(min=9, max=50)])
     username = TextField('Enter your Username', [validators.Length(min=4, max=24)])
-    home_town =  TextField('Enter the name of your hometown', [validators.Length(min=4, max=24)])
 
 class ConfirmEmail(Form):
     confirmation = TextField('Enter the Confirmatory Code', [validators.Length(min=4, max=24)])
@@ -163,35 +156,72 @@ def forget_password():
     form = ResetPassword(request.form)
 
     if request.method =="POST" and form.validate():
-        email = form.email.data
         username = form.username.data
-        home_town = form.home_town.data
 
+        # fetching the email from database
         curs,connect = connection()
-
-                    
+           
         curs.execute("select email from users where username = (%s) " , [username])
         r_email = curs.fetchone()[0]
         
-        print(r_email)
-        curs.execute("select home_town from users where username = (%s) " , [username])
-        r_home_town = curs.fetchone()[0]
-        print(r_home_town)
-
         connect.commit()
         curs.close()
         connect.close()
         gc.collect()
 
 
-        if r_email == email  and r_home_town == home_town:
+        # sending the code to the eamil
+        port = 465
+        stmp_server = "smtp.gmail.com"
+        
+        sender_email = "pentecostalrevivalcenterag@gmail.com"
+        receiver_email = r_email
+        name = username
+        password = "revmoses1954"
 
-            session['username'] = username
-            
-            print("The process was sucessful")
-            return redirect(url_for('set_password'))
+        confirmation_code = ""
+        for a in range(0,7):
+            confirmation_code += str(random.randint(0,9))
+
+        
+
+        msg = MIMEText(" Hello "+ name + " ! \n \n You requested for a reset of password on the Pentecostal Revival center,AG website.To confirm that it was really you, please enter the confirmatory code  into the box providedonthe website. Thank you \n \n \t \t Confirmatory Code: "+ confirmation_code  +"\n \n  But if it was not you can ignore this mail sent to you ")
+        msg['Subject'] = 'PRC AG website sign up email confirmation'
+        msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
+        msg['To'] =  r_email
+        
+        session["conf"] = confirmation_code
+
+        print(confirmation_code)
+
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL(stmp_server,port,context = context) as server:
+            server.login(sender_email,password)
+            server.sendmail(sender_email,receiver_email,msg.as_string())
+            print('Mail sent')
+
+
+        return redirect(url_for('confirm_reset'))
 
     return render_template("forgetPassword.html", form=form)
+
+
+@app.route('/confirm_reset/', methods=["GET","POST"])
+def confirm_reset():
+    form=ConfirmEmail(request.form)
+    if request.method =="POST" and form.validate():
+        confirmed_code = form.confirmation.data
+        conf = session["conf"]
+        if conf == confirmed_code:
+            return redirect(url_for('set_password'))
+
+        else:
+            error = "Your credentials do not match, try again" 
+            return redirect(url_for('home_page'))
+
+    return render_template("confirm_email.html", form = form)
+
 
 
 
@@ -215,7 +245,7 @@ def set_password():
             curs.close()
             connect.close()
             gc.collect()
-            return redirect(url_for("home_page"))
+            return redirect(url_for("home"))
 
         else:
             error = "Your credentials do not match, try again" 
@@ -301,7 +331,6 @@ def logout():
 
 #routing the various webpages 
 
-update = ""
 
 @app.route('/',methods=["GET","POST"])
 def home_page():
