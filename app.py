@@ -5,7 +5,6 @@ from flask_bcrypt import Bcrypt
 from functools import wraps
 from MySQLdb import escape_string as thwart
 import gc
-import queue
 from time import localtime,strftime
 from datetime import datetime
 import os
@@ -18,7 +17,7 @@ import random
 
 
 app=Flask(__name__)
-app.config['SECRET_KEY'] = "hispresence123@"
+app.config['SECRET_KEY'] = "ignance123@"
 app.config['DEBUG'] = True
 
     
@@ -27,8 +26,7 @@ bcrypt = Bcrypt()
 socketio = SocketIO(app)
 
        
-
-@app.route("/confirm_email/", methods=["POST", "GET"])
+@app.route("/confirm_email/", methods=["GET","POST"])
 def confirm_email():
     port = 465
     stmp_server = "smtp.gmail.com"
@@ -49,7 +47,7 @@ def confirm_email():
     msg['From'] = 'pentecostalrevivalcenterag@gmail.com'
     msg['To'] = session["email"]
     
-    session["conf"] = confirmation_code
+    session['conf'] = confirmation_code
 
     context = ssl.create_default_context()
 
@@ -66,7 +64,7 @@ def confirm_coded():
     form = ConfirmEmail(request.form)
     if request.method =="POST" and form.validate():
         confirmed_code = form.confirmation.data
-        conf = session["conf"]
+        conf = session['conf']
         # inserting statements into the database
         if confirmed_code == conf:
             firstname = session["firstname"]
@@ -1253,42 +1251,8 @@ def teen():
 def women():
     return render_template('women.html', name=session['logged_in'])
 
-
-
-def converting_time(seconds):
-    seconds = seconds % (24 * 3600) #takes care of the timing in seconds
-    seconds %= 36000 
-    minutes = seconds // 60
-    seconds %=60
      
 
-
-
-
-@app.route('/index/',methods=["GET","POST"])
-@login_required
-def index():
-
-
-    
-    return render_template('index.html',name=session['logged_in'], username=session['username'])
-
-# @app.route('/viewbook/',method=["GET"])
-# @login_required
-# def viewbook():
-   
-#     error=''
-#     try:
-#         book_id = request.args.get("id")
-#         book_table = request.args.get("class")
-#         curs, connect = connection()
-#         curs.execute('SELECT * FROM (%s) where filename is (%s)' , book_table,book_id)
-#         data = curs.fetchall()
-
-#         return render_template('downloads.html',  value = data)
-
-#     except Exception as e:
-#         return render_template('downloads.html', name=session['logged_in'])
 
 @app.route('/youth/',methods=["GET","POST"])
 @login_required
