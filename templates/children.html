@@ -1,91 +1,110 @@
-<!DOCTYPE html> 
-<html>
-    <head>
-       <meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PRC, we are moving forward</title>
+      <link rel="stylesheet" href="{{url_for('static', filename='css/dailydevotion.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+      <meta name="viewport" content="width='device-width' initial-scale=1">
+      <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
         
-        <title>PRC, we are moving forward</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='css/Announcements.css')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-        <meta name="viewport" content="width='device-width' initial-scale=1">
-        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+
+  </head>
+  
+    
+{% extends "navigation.html" %}
+
+
+{% block content %}
+
+<body>
+
+  
+<main role="main">
+
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="d-block w-100" src="{{url_for('static', filename='images/2-corinthians-7-1.jpg') }}" alt="First slide">
+
+        <div class="container">
+          <div class="carousel-caption ">
+            <h1></h1>
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="{{url_for('static', filename='images/2-corinthians-7-1.jpg') }}" alt="Second slide">
+
+        <div class="container">
+          <div class="carousel-caption">
+            <h1></h1>
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img class="d-block w-100" src="{{url_for('static', filename='images/2-corinthians-7-1.jpg') }}" alt="Second slide">
+
+        <div class="container">
+          <div class="carousel-caption ">
+            <h1></h1>
+            <p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+
+      <br>
+      <br>
+
+    <div class="container">
+      <div class="row">
+
+        {% for row in value %}
+  
+          <div class=" devotional col-lg-5 col-md-5 col-sm-12 col-xs-12">
+            <img id="" src="" alt="">
+  
+            <h3 id="title" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"> <strong><u>{{row[3]}}</u></strong> </h3>
+            <br>
+            <p id="message"> {{row[4]}} </p>
+            <p>Posted by <strong><i>{{row[1]}}</i></strong> on <strong><i>{{row[2]}}</i></strong> </p>
+          </div>
         
-    </head>
-
-      {% extends "navigation.html" %}
-
-    <body>
-
-      {% block content %}
-      
-      
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      
-
-
-      <h2><strong>Children Announcements </strong></h2>
-
-      <br>
-     <br>
-
-     <div class="container col-lg-9 col-md-9 col-sm-9 col-xs-9">
-
-     <!-- Slideshow container -->
-      <div class="slideshow-container">
-
-        <!-- Full-width images with number and caption text -->
-        <div class="mySlides fade">
-          <div class="numbertext">1 / 5</div>
-          <img src="{{url_for('static', filename='images/photo-1469228252629-cbe7cb7db2c8.jpeg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">2 / 5</div>
-          <img src="{{url_for('static', filename='images/photo-1438232992991-995b7058bbb3.jpeg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">3 / 5</div>
-          <img src="{{url_for('static', filename='images/1_dUCe3N56V-VeAqF1ZWwjtA.jpeg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">4 / 5</div>
-          <img src="{{url_for('static', filename='images/32541d75f645d0e28bd58b1017670236.jpg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">5 / 5</div>
-          <img src="{{url_for('static', filename='images/37482-woman-reading-bible-outside-1200.1200w.tn.jpg') }}" style="width:100%">
-          
-        </div>
-
-      </div>
-      <br>
-
-      <!-- The dots/circles -->
-      <div style="text-align:center">
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
+        {% endfor %}
+  
+        
+  
       </div>
 
-      {% endblock %}
+      
 
-</div>
-    </body>
+    </div>
+  
+      
+      
+      
+      
+</body>
+{% endblock %}
 
-    
-    
-    
+
+
 </html>

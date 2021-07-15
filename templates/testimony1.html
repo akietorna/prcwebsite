@@ -9,18 +9,18 @@
         
         {%block body%}
 
-            <h3 style="margin-top: 70px; text-align: center;"><strong>List of users</strong></h3>
+            <h3 style="margin-top: 70px; text-align: center;"><strong>List Announcents</strong></h3>
 
 
             <table>
                 <thead >
                     <tr>
-                        <th>Message_id</th>
+                        <th>Id_number</th>
                         <th>Sender/Author </th>
                         <th> Time_sent </th>
                         <th> Title </th>
-                        <th> Passage </th>
-                        <th> Message </th>
+                        <th> Testimony </th>
+                        
                         
                     </tr>
                 </thead>
@@ -35,7 +35,6 @@
                         <td> {{row[2]}} </td>
                         <td> {{row[3]}} </td>
                         <td> {{row[4]}} </td>
-                        <td> {{row[5]}} </td>
                        
                     </tr>
                     {%endfor%}
@@ -45,10 +44,10 @@
 
 
 
-            <form action="/deletepost" style="margin-top: 40px; margin-left: 40px; " method="POST">
-                <a href="/addpost"><input type="button" value="Add new post" style="border-radius: 5px; background-color: blue; color: white;"></a>
+            <form action="/delete_testimony" style="margin-top: 40px; margin-left: 40px; " method="POST">
+                <a href="/add_testimony"><input type="button" value="Add a testimony" style="border-radius: 5px; background-color: blue; color: white;"></a>
                 <input name="picked" style="margin-left: 10px;" type="text" placeholder="Enter the ID to delete " >
-                <input type="submit" value="Delete a post" style="border-radius: 5px; background-color: blue; color: white;">              
+                <input type="submit" value="Delete a testimony" style="border-radius: 5px; background-color: blue; color: white;">              
             </form>
             
         {%endblock%}

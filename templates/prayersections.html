@@ -85,7 +85,47 @@
         <br>
         <textarea name="message" id="message" cols="70" rows="5" placeholder="Kindly type your problem inside this box"></textarea>
         <br>
-        <br>
+        <br>{% extends "navigation.html" %}
+
+
+
+        <body style="text-align: center; background-color: rgb(149, 145, 248);">
+            {% block content %}
+        
+            <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                <br>
+                <br>
+                <br>
+        
+                <br>
+        
+        
+                <h4><strong><u>Prayer Request</u></strong> </h4>
+        
+        
+                
+                {% from "_formhelpers.html" import render_field %}
+                    <form method="POST"  action="" role="">
+                        <dl>
+                            
+                            {{ render_field(form.sender_name) }}
+                            {{ render_field(form.prayer) }}
+                            {{ render_field(form.contact) }}
+                        </dl>
+        
+                        <p><input style="background-color: rgb(185, 137, 230); color: white;" type="submit" value="Submit Post" ></p>
+                    </form>
+                    {% if error %}
+                        <p class="error"><strong>Error:</strong> {{error}} </p>
+                    {% endif %}
+            </div>
+        
+            {% endblock %}
+            </body>
+        
+        
+        
+        
   
         <button class="btn btn-outline-success my-2 my-sm-0" id="buttton" type="submit">Submit your message</button>
   

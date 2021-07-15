@@ -9,18 +9,19 @@
         
         {%block body%}
 
-            <h3 style="margin-top: 70px; text-align: center;"><strong>List of users</strong></h3>
+            <h3 style="margin-top: 70px; text-align: center;"><strong>List Announcents</strong></h3>
 
 
             <table>
                 <thead >
                     <tr>
-                        <th>Message_id</th>
+                        <th>Id_number</th>
                         <th>Sender/Author </th>
                         <th> Time_sent </th>
                         <th> Title </th>
-                        <th> Passage </th>
-                        <th> Message </th>
+                        <th> Announcement </th>
+                        <th>Dept_code</th>
+                        
                         
                     </tr>
                 </thead>
@@ -46,9 +47,9 @@
 
 
             <form action="/deletepost" style="margin-top: 40px; margin-left: 40px; " method="POST">
-                <a href="/addpost"><input type="button" value="Add new post" style="border-radius: 5px; background-color: blue; color: white;"></a>
+                <a href="/add_announcement"><input type="button" value="Add announcement" style="border-radius: 5px; background-color: blue; color: white;"></a>
                 <input name="picked" style="margin-left: 10px;" type="text" placeholder="Enter the ID to delete " >
-                <input type="submit" value="Delete a post" style="border-radius: 5px; background-color: blue; color: white;">              
+                <input type="submit" value="Delete an announcement" style="border-radius: 5px; background-color: blue; color: white;">              
             </form>
             
         {%endblock%}

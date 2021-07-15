@@ -1,9 +1,9 @@
 {% extends "admin.html" %}
 
-{% block body %}
 
-<body style="text-align: center; background-color: rgb(250, 244, 193);">
-    
+
+<body style="text-align: center; background-color: rgb(149, 145, 248);">
+    {% block body %}
 
     <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
         <br>
@@ -13,7 +13,7 @@
         <br>
 
 
-        <h4><strong><u>Add New Post</u></strong> </h4>
+        <h4><strong><u>Add New Announcement</u></strong> </h4>
 
 
         
@@ -23,19 +23,20 @@
                     
                     {{ render_field(form.sender_name) }}
                     {{ render_field(form.title) }}
-                    {{ render_field(form.passage) }}
-                    {{ render_field(form.message) }}
+                    {{ render_field(form.announcement) }}
+                    {{ render_field(form.department) }}
+                    <small>YM for Youth Ministry,MM for Men Ministry,WM for Women Ministry, CM for Children Ministry and TM for Teen Ministry</small>
                 </dl>
 
-                <p><input type="submit" value="Submit Post" ></p>
+                <p><input style="background-color: rgb(185, 137, 230); color: white;" type="submit" value="Submit Post" ></p>
             </form>
             {% if error %}
                 <p class="error"><strong>Error:</strong> {{error}} </p>
             {% endif %}
     </div>
 
-        
+    {% endblock %}
     </body>
-{% endblock %}
+
 
 

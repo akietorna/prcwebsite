@@ -9,8 +9,8 @@ from time import localtime,strftime
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
-from flask_socketio import SocketIO,send, emit, join_room, leave_room
-from asgiref.wsgi import WsgiToAsgi
+#from flask_socketio import SocketIO,send, emit, join_room, leave_room
+#from asgiref.wsgi import WsgiToAsgi
 import smtplib,ssl
 from email.mime.text import MIMEText
 import random
@@ -23,7 +23,7 @@ app.config['DEBUG'] = True
     
 #initializations
 bcrypt = Bcrypt()
-socketio = SocketIO(app)
+#socketio = SocketIO(app)
 
        
 @app.route("/confirm_email/", methods=["GET","POST"])
@@ -146,7 +146,21 @@ class DailyDevotion(Form):
     passage = TextField('Passage', [validators.Length(min=4, max=24)])
     message = TextField('Message', [validators.Length(min=1, max=50000)])
 
+class AddTestimony(Form):
+    sender_name = TextField('Author', [validators.Length(min=4, max=50)])
+    title = TextField('Title', [validators.Length(min=1, max=100)])
+    testimony = TextField('Testimony', [validators.Length(min=1, max=100000)])
 
+class Announcement(Form):
+    sender_name = TextField('Author', [validators.Length(min=4, max=50)])
+    title = TextField('Title', [validators.Length(min=1, max=100)])
+    announcement = TextField('Announcement', [validators.Length(min=1, max=50000)])
+    department = TextField('Department Code', [validators.Length(min=2, max=2)])
+
+class Announcement(Form):
+    sender_name = TextField('Name', [validators.Length(min=4, max=50)])
+    prayer = TextField('Prayer_request', [validators.Length(min=1, max=50000)])
+    contact = TextField('Contact', [validators.Length(min=10, max=15)])
 
 @app.route("/forget_password/", methods=["POST", "GET"])
 def forget_password():
@@ -243,6 +257,8 @@ def set_password():
             curs.close()
             connect.close()
             gc.collect()
+
+            session['logged_in'] = True
             return redirect(url_for("home"))
 
         else:
@@ -281,6 +297,62 @@ def addpost():
     return render_template("addpost.html", form=form, name=session['logged_in'])
 
 
+@app.route("/addtestimony/", methods=["POST", "GET"])
+@login_required
+def addtestimony():
+    form = AddTestimony(request.form)
+    if request.method =='POST' and form.validate():
+        sender_name = form.sender_name.data
+        title = form.title.data
+        testimony= form.testimony.data
+
+        time_sent = datetime.now()
+
+        curs,connect = connection()
+                    
+        input_statement = ("INSERT INTO testimony (sender_name,time_sent,title,testimony) VALUES (%s,%s,%s,%s)" ) 
+        data = [sender_name, time_sent,title, testimony]
+        curs.execute( input_statement, data)
+
+        connect.commit()
+        print("The process was sucessful")
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for('testimony'))
+
+    return render_template("addtestimony.html", form=form, name=session['logged_in'])
+
+
+@app.route("/add_announcement/", methods=["POST", "GET"])
+@login_required
+def add_announcement():
+    form = Announcement(request.form)
+    if request.method =='POST' and form.validate():
+        sender_name = form.sender_name.data
+        title = form.title.data
+        announcement= form.announcement.data
+        department= form.department.data
+
+        time_sent = datetime.now()
+
+        curs,connect = connection()
+                    
+        input_statement = ("INSERT INTO announcement (sender_name,time_sent,title,announcement,Dept_code) VALUES (%s,%s,%s,%s,%s)" ) 
+        data = [sender_name, time_sent,title, announcement,department]
+        curs.execute( input_statement, data)
+
+        connect.commit()
+        print("The process was sucessful")
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for('announcement'))
+
+    return render_template("add_announcement.html", form=form, name=session['logged_in'])
+
 
 
 @app.route("/deletepost/",methods=["POST", "GET"])
@@ -303,6 +375,47 @@ def deletepost():
 
     return redirect(url_for("devotional"), name= session['logged_in']) 
 
+@app.route("/delete_announcement/",methods=["POST", "GET"])
+@login_required
+def delete_announcement():
+    if request.method == 'POST':
+        picked = request.form['picked']
+
+
+        # connection to database
+        curs,connect = connection()
+        curs.execute("DELETE FROM  announcement WHERE id_number = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for("announcement"))
+
+    return redirect(url_for("announcement"), name= session['logged_in']) 
+
+
+
+@app.route("/delete_testimony/",methods=["POST", "GET"])
+@login_required
+def delete_testimony():
+    if request.method == 'POST':
+        picked = request.form['picked']
+
+
+        # connection to database
+        curs,connect = connection()
+        curs.execute("DELETE FROM  testimony WHERE user_id = %s", [picked])
+
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for("testimony"))
+
+    return redirect(url_for("testimony"), name= session['logged_in']) 
 
 @app.route("/devotional/",methods=["POST","GET"])
 def devotional():
@@ -318,8 +431,23 @@ def devotional():
 
     except Exception as e:
         return render_template('admin1.html', error = error , name=session['admin'])
-    
 
+
+
+@app.route("/announcement/",methods=["POST","GET"])
+def announcement():
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM announcement')
+        data = curs.fetchall()
+
+        data = reversed(data)        
+       
+        return render_template("announcement.html", value = data)
+
+    except Exception as e:
+        return render_template('admin1.html', error = error , name=session['admin'])
 @app.route("/logout/")
 @login_required
 def logout():
@@ -443,12 +571,6 @@ def users():
 
 
 
-
-
-
-
-
-
 @app.route('/add_users/', methods=['GET','POST'])
 @login_required
 def add_users():
@@ -536,15 +658,59 @@ def home():
 
 
 
-@app.route('/addiction/',methods=["GET","POST"])
+@app.route('/testimony/',methods=["GET","POST"])
 @login_required
-def addiction():
-    return render_template('addiction.html', name=session['logged_in'],username=session['username'])
+def testimony():
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM testimony')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template("testimony.html", value = data)
+
+    except Exception as e:
+        return render_template('testimony.html', name=session['logged_in'])
+
+
+@app.route('/testimony1/',methods=["GET","POST"])
+@login_required
+def testimony1():
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM testimony')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template("testimony1.html", value = data)
+
+    except Exception as e:
+        return render_template('testimony1.html', name=session['logged_in'])
 
 @app.route('/children/',methods=["GET","POST"])
 @login_required
 def children():
-    return render_template('children.html', name=session['logged_in'])
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * from announcement where Dept_code="CM"')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template('children.html', name=session['logged_in'],value = data)
+
+    except Exception as e:
+        return render_template('children.html', name=session['logged_in'])
 
 @app.route('/dailydevotion/',methods=["GET","POST"])
 @login_required
@@ -577,7 +743,7 @@ def general():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT * FROM dailydevotion')
+        curs.execute('SELECT * FROM announcement where Dept_code = "GA" ')
         data = curs.fetchall()
         
         data = reversed(data)
@@ -650,7 +816,17 @@ def marriage1():
 @app.route('/men/',methods=["GET","POST"])
 @login_required
 def men():
-    return render_template('men.html', name=session['logged_in'])
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * announcement where Dept_code="MM"')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+        return render_template('men.html', name=session['logged_in'],value = data)
+
+    except Exception as e:
+        return render_template('men.html', name=session['logged_in'])
 
 @app.route('/message/',methods=["GET","POST"])
 @login_required
@@ -1112,8 +1288,6 @@ def sign_up_page():
 
             check_name = curs.execute("SELECT * FROM users WHERE username = %s ", [username] )
 
-            check_mail = curs.execute("SELECT * FROM users WHERE email = %s ", [email])
-
             connect.commit()
             print("The process was sucessful")
             curs.close()
@@ -1244,12 +1418,36 @@ def sundayschool():
 @app.route('/teen/',methods=["GET","POST"])
 @login_required
 def teen():
-    return render_template('teen.html', name=session['logged_in'])
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * from announcement where Dept_code="TM"')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template('teen.html', name=session['logged_in'],value = data)
+
+    except Exception as e:
+        return render_template('teen.html', name=session['logged_in'])
 
 @app.route('/women/',methods=["GET","POST"])
 @login_required
 def women():
-    return render_template('women.html', name=session['logged_in'])
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * from announcement where Dept_code="WM"')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template('women.html', name=session['logged_in'], value = data)
+
+    except Exception as e:
+        return render_template('women.html', name=session['logged_in'])
 
      
 
@@ -1257,7 +1455,19 @@ def women():
 @app.route('/youth/',methods=["GET","POST"])
 @login_required
 def youth():
-    return render_template('youth.html', name=session['logged_in'])
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM announcement where Dept_code="YM"')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template('youth.html',name=session['logged_in'],value = data)
+
+    except Exception as e:
+        return render_template('youth.html', name=session['logged_in'])
 
 
 @app.errorhandler(404)
@@ -1269,24 +1479,24 @@ def server_error(e):
     return render_template('500.html')
 
 
-@socketio.on('message')
-def message(data):
-    # print(f"\n\n {data}\n\n ")
-    send({'msg':data['msg'], 'username':data['username'], 'time_stamp':strftime('%b-%d %I:%M%p ', localtime()) })
+# @socketio.on('message')
+# def message(data):
+#     # print(f"\n\n {data}\n\n ")
+#     send({'msg':data['msg'], 'username':data['username'], 'time_stamp':strftime('%b-%d %I:%M%p ', localtime()) })
 
 
-@socketio.on('join')
-def join(data):
+# @socketio.on('join')
+# def join(data):
 
-    join_room(data['room'])
-    send({'msg':data['username'] + ' has joined the chatroom' } )
+#     join_room(data['room'])
+#     send({'msg':data['username'] + ' has joined the chatroom' } )
 
 
-@socketio.on('leave')
-def leave(data):
+# @socketio.on('leave')
+# def leave(data):
 
-    leave_room(data['room'])
-    send({'msg':data['username'] + ' has left the chatroom' })
+#     leave_room(data['room'])
+#     send({'msg':data['username'] + ' has left the chatroom' })
 
 
 
@@ -1296,7 +1506,4 @@ if __name__ =="__main__":
 
 if __name__== "__main__":
     app.run(debug=True)
-
-
-
 
