@@ -42,12 +42,9 @@
   border-radius: 5px;
   margin-left: 30px;
   margin-top: 40px;
-  height: 150px;
-  width: 150px;
+  width: 70px;
   margin-bottom: 50px;
   overflow: hidden;
-
-
 }
 
 .messaging:hover{

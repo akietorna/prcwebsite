@@ -3,27 +3,22 @@
     <head>
       <meta charset="utf-8">
         <title>PRC, we are moving forward</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='css/message.css')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
-        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-        <meta name="viewport" content="width='device-width' initial-scale=1">
-        <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
-        
-        
     </head>
-
-    {% extends "navigation.html" %}
 
     <body>
       
-      {% block content %}
+      {% for row in value %}
+        <div class="messaging col-lg-10 col-md-12 col-sm-12 col-xs-12">
 
+          <br>
+          <iframe src="{{url_for('static', filename=row[1]) }}" frameborder="5" title="{{row[0]}}"  height="70%" width="100%"></iframe>
+          <br>
+            <h6><a href="">Click here to download</a></h6>
+        </div>
+      {% endfor %}
       
-      <iframe src="" frameborder="0" scrolling="auto" height="100%" width="100%"></iframe>
+      
 
-      <h6><a href="">Click here to download</a></h6>
-
-      {% endblock %}
         
     </body>
 

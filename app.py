@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request,url_for,redirect,flash,session,g, send_from_directory, abort
 from database import connection
-from wtforms import Form, BooleanField, TextField, PasswordField,validators
+from wtforms import Form, BooleanField,TextAreaField, TextField, PasswordField,validators
 from flask_bcrypt import Bcrypt
 from functools import wraps
 from MySQLdb import escape_string as thwart
@@ -116,7 +116,17 @@ def login_required(f):
         
     return wrapping
 
-    
+def logged_in_required(f):
+    @wraps(f)
+    def wrapping(*args, **kwargs):
+        if 'admin' in session:
+            return f(*args, **kwargs)
+        
+        else :
+            flash('You need to login first')
+            return redirect(url_for('admin'))
+        
+    return wrapping 
     
 
 class RegistrationForm(Form):
@@ -144,22 +154,22 @@ class DailyDevotion(Form):
     sender_name = TextField('Author', [validators.Length(min=4, max=50)])
     title = TextField('Title', [validators.Length(min=1, max=100)])
     passage = TextField('Passage', [validators.Length(min=4, max=24)])
-    message = TextField('Message', [validators.Length(min=1, max=50000)])
+    message = TextAreaField('Message', [validators.Length(min=1, max=50000)])
 
 class AddTestimony(Form):
     sender_name = TextField('Author', [validators.Length(min=4, max=50)])
     title = TextField('Title', [validators.Length(min=1, max=100)])
-    testimony = TextField('Testimony', [validators.Length(min=1, max=100000)])
+    testimony = TextAreaField('Testimony', [validators.Length(min=1, max=100000)])
 
 class Announcement(Form):
     sender_name = TextField('Author', [validators.Length(min=4, max=50)])
     title = TextField('Title', [validators.Length(min=1, max=100)])
-    announcement = TextField('Announcement', [validators.Length(min=1, max=50000)])
+    announcement = TextAreaField('Announcement', [validators.Length(min=1, max=50000)])
     department = TextField('Department Code', [validators.Length(min=2, max=2)])
 
-class Announcement(Form):
+class PrayerRequest(Form):
     sender_name = TextField('Name', [validators.Length(min=4, max=50)])
-    prayer = TextField('Prayer_request', [validators.Length(min=1, max=50000)])
+    prayer = TextAreaField('Prayer_request', [validators.Length(min=1, max=50000)])
     contact = TextField('Contact', [validators.Length(min=10, max=15)])
 
 @app.route("/forget_password/", methods=["POST", "GET"])
@@ -269,7 +279,7 @@ def set_password():
     return render_template('reset_password.html', form=form)
 
 @app.route("/addpost/", methods=["POST", "GET"])
-@login_required
+@logged_in_required
 def addpost():
     form = DailyDevotion(request.form)
     if request.method =='POST' and form.validate():
@@ -322,11 +332,11 @@ def addtestimony():
 
         return redirect(url_for('testimony'))
 
-    return render_template("addtestimony.html", form=form, name=session['logged_in'])
+    return render_template("addtestimony.html", form=form, name=session['admin'])
 
 
 @app.route("/add_announcement/", methods=["POST", "GET"])
-@login_required
+@logged_in_required
 def add_announcement():
     form = Announcement(request.form)
     if request.method =='POST' and form.validate():
@@ -351,12 +361,12 @@ def add_announcement():
 
         return redirect(url_for('announcement'))
 
-    return render_template("add_announcement.html", form=form, name=session['logged_in'])
+    return render_template("add_announcement.html", form=form, name=session['admin'])
 
 
 
 @app.route("/deletepost/",methods=["POST", "GET"])
-@login_required
+@logged_in_required
 def deletepost():
     if request.method == 'POST':
         picked = request.form['picked']
@@ -373,10 +383,10 @@ def deletepost():
 
         return redirect(url_for("devotional"))
 
-    return redirect(url_for("devotional"), name= session['logged_in']) 
+    return redirect(url_for("devotional"), name= session['admin']) 
 
 @app.route("/delete_announcement/",methods=["POST", "GET"])
-@login_required
+@logged_in_required
 def delete_announcement():
     if request.method == 'POST':
         picked = request.form['picked']
@@ -393,7 +403,7 @@ def delete_announcement():
 
         return redirect(url_for("announcement"))
 
-    return redirect(url_for("announcement"), name= session['logged_in']) 
+    return redirect(url_for("announcement"), name= session['admin']) 
 
 
 
@@ -435,6 +445,7 @@ def devotional():
 
 
 @app.route("/announcement/",methods=["POST","GET"])
+@login_required
 def announcement():
     error=''
     try:
@@ -448,6 +459,8 @@ def announcement():
 
     except Exception as e:
         return render_template('admin1.html', error = error , name=session['admin'])
+
+
 @app.route("/logout/")
 @login_required
 def logout():
@@ -484,7 +497,6 @@ def home_page():
                 session['logged_in'] = True
                 session['username'] = request.form['username']
                 update = request.form['username']
-                # session['admin'] = True
 
                 return redirect(url_for("home"))
 
@@ -507,7 +519,6 @@ def home_page():
 
 
 @app.route('/administration_page/',methods=["GET","POST"])
-
 def admin():
     error = ''
     if request.method == 'POST':
@@ -519,9 +530,11 @@ def admin():
             curs, connect = connection()
             info = curs.execute("SELECT * FROM administration WHERE username = %s", [username])
 
+
+
             # fetching the password
 
-            Passwd = curs.fetchone()[1]
+            Passwd = curs.fetchone()[3]
 
             
 
@@ -530,8 +543,11 @@ def admin():
             
 
             if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['username'] = request.form['username']
                 session['admin'] = True
+                session['username'] = request.form['username']
+
+                print("it worked")
+                
 
                 return redirect(url_for("users"))
 
@@ -556,7 +572,7 @@ def admin():
 
 
 @app.route('/users/',methods=['GET', 'POST'])
-@login_required
+@logged_in_required
 def users():
     error=''
     try:
@@ -572,7 +588,7 @@ def users():
 
 
 @app.route('/add_users/', methods=['GET','POST'])
-@login_required
+@logged_in_required
 def add_users():
 
     form = RegistrationForm(request.form)
@@ -623,11 +639,11 @@ def add_users():
 
             return redirect(url_for("users"))
 
-    return render_template("add.html", form=form, name=session['logged_in'])
+    return render_template("add.html", form=form, name=session['admin'])
 
 
 @app.route('/delete_user/', methods=["GET", "POST"])
-@login_required
+@logged_in_required
 def delete_user():
     if request.method == 'POST':
         picked = request.form['picked']
@@ -643,7 +659,7 @@ def delete_user():
         gc.collect()
 
         return redirect(url_for('users'))
-    return redirect(url_for('users'), name= session['logged_in']) 
+    return redirect(url_for('users'), name= session['admin']) 
 
 
 
@@ -678,7 +694,7 @@ def testimony():
 
 
 @app.route('/testimony1/',methods=["GET","POST"])
-@login_required
+@logged_in_required
 def testimony1():
     error=''
     try:
@@ -693,7 +709,7 @@ def testimony1():
         return render_template("testimony1.html", value = data)
 
     except Exception as e:
-        return render_template('testimony1.html', name=session['logged_in'])
+        return render_template('testimony1.html', name=session['admin'])
 
 @app.route('/children/',methods=["GET","POST"])
 @login_required
@@ -731,9 +747,9 @@ def dailydevotion():
         return render_template('dailydevotion.html', name=session['logged_in'])
     
 
-@app.route('/depression/',methods=["GET","POST"])
+@app.route('/comment/',methods=["GET","POST"])
 @login_required
-def depression():
+def comment():
     return render_template('depression.html', name=session['logged_in'])
 
 
@@ -756,10 +772,6 @@ def general():
         return render_template('general.html', name=session['logged_in'])
     
 
-@app.route('/health/',methods=["GET","POST"])
-@login_required
-def health():
-    return render_template('health.html', name=session['logged_in'])
 
 @app.route('/health1/',methods=["GET","POST"])
 @login_required
@@ -767,7 +779,7 @@ def health1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM health')
+        curs.execute('SELECT filename,location FROM books where book_id = "HEAL"')
         data = curs.fetchall()
 
         return render_template('health1.html',  value = data)
@@ -783,7 +795,7 @@ def inspiration():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM inspirational')
+        curs.execute('SELECT filename,location FROM books where book_id="INS"')
         data = curs.fetchall()
 
         return render_template("inspiration.html", value = data)
@@ -793,18 +805,13 @@ def inspiration():
 
     
 
-@app.route('/marriage/',methods=["GET","POST"])
-@login_required
-def marriage():
-    return render_template('marriage.html', name=session['logged_in'])
-
 @app.route('/marriage1/',methods=["GET","POST"])
 @login_required
 def marriage1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM marriage')
+        curs.execute('SELECT filename,location FROM books where book_id = "MAR"')
         data = curs.fetchall()
 
         return render_template('marriage1.html',  value = data)
@@ -849,10 +856,33 @@ def prayer1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM prayer')
+        curs.execute('SELECT id_number, filename,location FROM books where book_id= "PRAY"')
         data = curs.fetchall()
 
         return render_template('prayer1.html',  value = data)
+
+    except Exception as e:
+        return render_template('prayer1.html', name=session['logged_in'])
+
+
+@app.route('/viewbook/',methods=["GET","POST"])
+@login_required
+def viewbook():
+    error=''
+    try:
+        print("passed")
+        id_num = req.params.id
+        print("passed it")
+        curs,connect = connection()
+        curs.execute('select filename,location from books where book_id = %s',id_num)
+        data= curs.fetchall()
+        connect.commit()
+        curs.close()
+        connect.close()
+        gc.collect()
+        print(data)
+        print("it passed")
+        return render_template('downloads.html',name=session['logged_in'], value=data)
 
     except Exception as e:
         return render_template('prayer1.html', name=session['logged_in'])
@@ -905,7 +935,7 @@ app.config['ALLOWED_BOOK_EXTENTIONS']=["PDF"]
 
 
 @app.route('/spiritualbooks/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def spiritualbooks():
     if request.method =='POST':
 
@@ -924,16 +954,13 @@ def spiritualbooks():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/spirituallife/"
-                    
-
-                    filename = "spirituallife/" + filename
+                    location = "books/spirituallife/" + filename
 
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO spiritual_life (sender_name,time_sent,filename,location) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename, sermon]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename, location,"SPIR"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -956,7 +983,7 @@ def spiritualbooks():
 
 
 @app.route('/marriagebooks/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def marriagebooks():
     if request.method =='POST':
 
@@ -975,14 +1002,13 @@ def marriagebooks():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/marriage/"
+                    sermon = "books/marriage/"+ filename
                     
-                    filename = "marriage/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO marriage (sender_name,time_sent,filename,location) VALUES (%s,%s,%s,%s)" ) 
-                    data = [sender_name, time_sent,filename,sermon]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,sermon,"MAR"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1006,7 +1032,7 @@ def marriagebooks():
 
 
 @app.route('/sermons/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def sermons():
     if request.method =='POST':
 
@@ -1025,9 +1051,8 @@ def sermons():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/sermons/"
+                    sermon = "sermons/"+ filename
 
-                    filename = "sermons/" + filename
                     curs,connect = connection()
                     
 
@@ -1055,7 +1080,7 @@ def sermons():
   
 
 @app.route('/sundayschool1/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def sundayschool1():
     if request.method =='POST':
 
@@ -1074,14 +1099,13 @@ def sundayschool1():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/sundaysch/"
+                    sermon = "books/sundaysch/" + filename
 
-                    filename = "sundaysch/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO sundayschool (sender_name,time_sent,filename,location) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename, sermon]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename, sermon, "SSCH"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1105,7 +1129,7 @@ def sundayschool1():
 
 
 @app.route('/prayerbooks/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def prayerbooks():
     if request.method =='POST':
 
@@ -1124,13 +1148,12 @@ def prayerbooks():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/prayer/"
-                    filename = "prayer/" + filename
+                    sermon =  "books/prayer/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO prayer (sender_name,time_sent,filename,location) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent, sermon,filename]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename, sermon,"PRAY"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1154,7 +1177,7 @@ def prayerbooks():
 
 
 @app.route('/healthbooks/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def healthbooks():
     if request.method =='POST':
 
@@ -1173,13 +1196,12 @@ def healthbooks():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/health/"
-                    filename = "health/" + filename
+                    sermon = "books/health/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO health (sender_name,time_sent,filename,location) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent, sermon,filename]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,sermon,"HEAL"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1201,7 +1223,7 @@ def healthbooks():
 
 
 @app.route('/inspirationalbooks/', methods=["GET","POST"]) 
-@login_required
+@logged_in_required
 def inspirationalbooks():
     if request.method =='POST':
 
@@ -1220,13 +1242,12 @@ def inspirationalbooks():
 
                     sender_name = session['username']
 
-                    sermon = "C:/Users/lenovo/Desktop/PRC/static/inspirationalbooks/"
-                    filenamess = "inspirationalbooks/" + filename
+                    sermon = "books/inspirationalbooks/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO inspirational (sender_name,time_sent,filename,location) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent, sermon,filenamess]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,sermon, "INS"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1375,16 +1396,6 @@ def ed_profile():
 
 
 
-@app.route('/sin/',methods=["GET","POST"])
-@login_required
-def sin():
-    return render_template('sin.html', name=session['logged_in'])
-
-@app.route('/spiritual_life/',methods=["GET","POST"])
-@login_required
-def spiritual_life():
-    return render_template('spiritual_life.html', name=session['logged_in'])
-
 @app.route('/spiritual_life1/',methods=["GET","POST"])
 @login_required
 def spiritual_life1():
@@ -1406,7 +1417,7 @@ def sundayschool():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM users')
+        curs.execute('SELECT filename,location FROM ')
         data = curs.fetchall()
 
         return render_template('sundayschool.html',  value = data)
