@@ -11,9 +11,9 @@
         <div class="messaging col-lg-10 col-md-12 col-sm-12 col-xs-12">
 
           <br>
-          <iframe src="{{url_for('static', filename=row[1]) }}" frameborder="5" title="{{row[0]}}"  height="70%" width="100%"></iframe>
+          <iframe src="{{url_for('static', filename=row[0]) }}" frameborder="5" title="{{row[2]}}"  height="600px" width="100%"></iframe>
           <br>
-            <h6><a href="">Click here to download</a></h6>
+            <h3><a href="/download/?id={{row[1]}}"><strong>Click here to download</strong></a></h3>
         </div>
       {% endfor %}
       

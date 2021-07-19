@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,url_for,redirect,flash,session,g, send_from_directory, abort
+from flask import Flask,render_template,request,url_for,redirect,flash,session,g, send_from_directory, abort,send_file
 from database import connection
 from wtforms import Form, BooleanField,TextAreaField, TextField, PasswordField,validators
 from flask_bcrypt import Bcrypt
@@ -171,6 +171,13 @@ class PrayerRequest(Form):
     sender_name = TextField('Name', [validators.Length(min=4, max=50)])
     prayer = TextAreaField('Prayer_request', [validators.Length(min=1, max=50000)])
     contact = TextField('Contact', [validators.Length(min=10, max=15)])
+
+
+class Comments(Form):
+    sender_name = TextField('Name', [validators.Length(min=4, max=50)])
+    comments = TextAreaField('Comment', [validators.Length(min=1, max=50000)])
+    contact = TextField('Contact', [validators.Length(min=10, max=15)])
+
 
 @app.route("/forget_password/", methods=["POST", "GET"])
 def forget_password():
@@ -445,7 +452,7 @@ def devotional():
 
 
 @app.route("/announcement/",methods=["POST","GET"])
-@login_required
+@logged_in_required
 def announcement():
     error=''
     try:
@@ -692,6 +699,44 @@ def testimony():
     except Exception as e:
         return render_template('testimony.html', name=session['logged_in'])
 
+@app.route('/prayer_request/',methods=["GET","POST"])
+@logged_in_required
+def prayer_request():
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * FROM prayer_request')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template("prayer_request.html", value = data)
+
+    except Exception as e:
+        return render_template('prayer_request.html', name=session['admin'])
+
+
+@app.route('/get_comment/',methods=["GET","POST"])
+@logged_in_required
+def get_comment():
+    error=''
+    try:
+        curs, connect = connection()
+        curs.execute('SELECT * comments')
+        data = curs.fetchall()
+        
+        data = reversed(data)
+
+
+
+        return render_template("comments.html", value = data)
+
+    except Exception as e:
+        return render_template('comments.html', name=session['admin'])
+
+
 
 @app.route('/testimony1/',methods=["GET","POST"])
 @logged_in_required
@@ -747,12 +792,6 @@ def dailydevotion():
         return render_template('dailydevotion.html', name=session['logged_in'])
     
 
-@app.route('/comment/',methods=["GET","POST"])
-@login_required
-def comment():
-    return render_template('depression.html', name=session['logged_in'])
-
-
 @app.route('/general/',methods=["GET","POST"] )
 @login_required
 def general():
@@ -779,7 +818,7 @@ def health1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM books where book_id = "HEAL"')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id = "HEAL"')
         data = curs.fetchall()
 
         return render_template('health1.html',  value = data)
@@ -795,7 +834,7 @@ def inspiration():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM books where book_id="INS"')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id="INS"')
         data = curs.fetchall()
 
         return render_template("inspiration.html", value = data)
@@ -811,7 +850,7 @@ def marriage1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM books where book_id = "MAR"')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id = "MAR"')
         data = curs.fetchall()
 
         return render_template('marriage1.html',  value = data)
@@ -841,7 +880,7 @@ def message():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM messages')
+        curs.execute('SELECT filename,file,post_id FROM messages')
         data = curs.fetchall()
 
         return render_template("messages.html", value = data)
@@ -856,7 +895,7 @@ def prayer1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT id_number, filename,location FROM books where book_id= "PRAY"')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id= "PRAY"')
         data = curs.fetchall()
 
         return render_template('prayer1.html',  value = data)
@@ -870,29 +909,86 @@ def prayer1():
 def viewbook():
     error=''
     try:
-        print("passed")
-        id_num = req.params.id
-        print("passed it")
+        id_num = request.args.get('id')
         curs,connect = connection()
-        curs.execute('select filename,location from books where book_id = %s',id_num)
+        curs.execute('select file,location,filename from books where id_number = %s',[id_num])
         data= curs.fetchall()
-        connect.commit()
-        curs.close()
-        connect.close()
-        gc.collect()
-        print(data)
-        print("it passed")
         return render_template('downloads.html',name=session['logged_in'], value=data)
 
     except Exception as e:
         return render_template('prayer1.html', name=session['logged_in'])
-    
+
+@app.route('/download/',methods=["GET","POST"])
+@login_required
+def download():
+    path=request.args.get('id')
+    return send_file(path,as_attachment=True)
+
+
+@app.route('/download_audio/',methods=["GET","POST"])
+@login_required
+def download_audio():
+    id_num=request.args.get('id')
+    curs,connect = connection()
+    curs.execute('select location from messages where post_id = %s',[id_num])
+    path= curs.fetchone()[0]
+    print(path)
+    return send_file(path,as_attachment=True)
+
 
 @app.route('/prayersections/',methods=["GET","POST"])
 @login_required
 def prayersections():
-    return render_template('prayersections.html', name=session['logged_in'])
+    form = PrayerRequest(request.form)
+    if request.method =='POST' and form.validate():
+        sender_name = form.sender_name.data
+        prayer= form.prayer.data
+        contact = form.contact.data
 
+        time_sent = datetime.now()
+
+        curs,connect = connection()
+                    
+        input_statement = ("INSERT INTO prayer_request (sender_name,time_sent,contact,prayer) VALUES (%s,%s,%s,%s)" ) 
+        data = [sender_name, time_sent,contact, prayer]
+        curs.execute( input_statement, data)
+
+        connect.commit()
+        print("The process was sucessful")
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for('thank_you'))
+
+    return render_template("prayersections.html", form=form, name=session['logged_in'])
+
+@app.route('/comments/',methods=["GET","POST"])
+@login_required
+def comments():
+    form = Comments(request.form)
+    if request.method =='POST' and form.validate():
+        sender_name = form.sender_name.data
+        comments= form.comments.data
+        contact = form.contact.data
+
+        time_sent = datetime.now()
+
+        curs,connect = connection()
+                    
+        input_statement = ("INSERT INTO comments(sender_name,time_sent,contact,comment) VALUES (%s,%s,%s,%s)" ) 
+        data = [sender_name, time_sent,contact, comments]
+        curs.execute( input_statement, data)
+
+        connect.commit()
+        print("The process was sucessful")
+        curs.close()
+        connect.close()
+        gc.collect()
+
+        return redirect(url_for('thank_you1'))
+
+    return render_template("comments.html", form=form, name=session['logged_in'])
 
 #takes care of audio extentions
 def allowed_audio_types(filename):
@@ -922,7 +1018,7 @@ def allowed_book_types(filename):
         return False
 
 
-app.config['AUDIO_UPLOADS']= "C:/Users/lenovo/Desktop/PRC/static/sermons/"
+app.config['AUDIO_UPLOADS']= "C:/Users/lenovo/Desktop/PRC/static/sermon/"
 app.config['SUNDAYSCH_UPLOADS']= "C:/Users/lenovo/Desktop/PRC/static/books/sundaysch/"
 app.config['INSPIRATION_UPLOADS']= "C:/Users/lenovo/Desktop/PRC/static/books/inspirationalbooks/"
 app.config['SPIRITUAL_UPLOADS']= "C:/Users/lenovo/Desktop/PRC/static/books/spirituallife/"
@@ -954,13 +1050,15 @@ def spiritualbooks():
 
                     sender_name = session['username']
 
-                    location = "books/spirituallife/" + filename
+                    location = "C:/Users/lenovo/Desktop/PRC/static/books/spirituallife/" + filename
+
+                    files = "books/spirituallife/" + filename
 
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename, location,"SPIR"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,file,location,book_id) VALUES (%s,%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,files, location,"SPIR"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1002,13 +1100,15 @@ def marriagebooks():
 
                     sender_name = session['username']
 
-                    sermon = "books/marriage/"+ filename
+                    sermon = "C:/Users/lenovo/Desktop/PRC/static/books/marriage/"+ filename
+
+                    files = "books/marriage/" + filename
                     
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename,sermon,"MAR"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,file,filename,location,book_id) VALUES (%s,%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,files,filename,sermon,"MAR"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1051,13 +1151,15 @@ def sermons():
 
                     sender_name = session['username']
 
-                    sermon = "sermons/"+ filename
+                    sermon = "C:/Users/lenovo/Desktop/PRC/static/sermon/"+ filename
+
+                    files = "sermon/" + filename
 
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO messages (sender_name,time_sent,location,filename) VALUES (%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent, sermon,filename]
+                    input_statement = ("INSERT INTO messages (sender_name,time_sent,location,filename,file) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent, sermon,filename,files]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1099,13 +1201,15 @@ def sundayschool1():
 
                     sender_name = session['username']
 
-                    sermon = "books/sundaysch/" + filename
+                    sermon = "C:/Users/lenovo/Desktop/PRC/static/books/sundaysch/" + filename
+
+                    files = "books/sundaysch/" + filename
 
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename, sermon, "SSCH"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,file,location,book_id) VALUES (%s,%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,files, sermon, "SSCH"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1148,12 +1252,14 @@ def prayerbooks():
 
                     sender_name = session['username']
 
-                    sermon =  "books/prayer/" + filename
+                    sermon =  "C:/Users/lenovo/Desktop/PRC/static/books/prayer/" + filename
+
+                    files = "books/prayer/" + filename
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename, sermon,"PRAY"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,file,location,book_id) VALUES (%s,%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,files, sermon,"PRAY"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1196,12 +1302,15 @@ def healthbooks():
 
                     sender_name = session['username']
 
-                    sermon = "books/health/" + filename
+                    sermon = "C:/Users/lenovo/Desktop/PRC/static/books/health/" + filename
+
+                    files = "books/health/" + filename
+
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename,sermon,"HEAL"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,file,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,files,sermon,"HEAL"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1242,12 +1351,15 @@ def inspirationalbooks():
 
                     sender_name = session['username']
 
-                    sermon = "books/inspirationalbooks/" + filename
+                    sermon = "C:/Users/lenovo/Desktop/PRC/static/books/inspirationalbooks/" + filename
+
+                    files = "books/inspirationalbooks/" + filename
+
                     curs,connect = connection()
                     
 
-                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,location,book_id) VALUES (%s,%s,%s,%s, %s)" ) 
-                    data = [sender_name, time_sent,filename,sermon, "INS"]
+                    input_statement = ("INSERT INTO books (sender_name,time_sent,filename,file,location,book_id) VALUES (%s,%s,%s,%s,%s, %s)" ) 
+                    data = [sender_name, time_sent,filename,files,sermon, "INS"]
                     curs.execute( input_statement, data)
 
                     connect.commit()
@@ -1402,13 +1514,13 @@ def spiritual_life1():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM spiritual_life')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id= "SPIR"')
         data = curs.fetchall()
 
         return render_template('spiritual_life1.html',  value = data)
 
     except Exception as e:
-            return render_template('spiritual_life1.html', name=session['logged_in'])
+        return render_template('spiritual_life1.html', name=session['logged_in'])
     
 
 @app.route('/sundayschool/',methods=["GET","POST"])
@@ -1417,9 +1529,8 @@ def sundayschool():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT filename,location FROM ')
+        curs.execute('SELECT id_number, filename,file FROM books where book_id= "SSCH"')
         data = curs.fetchall()
-
         return render_template('sundayschool.html',  value = data)
 
     except Exception as e:
@@ -1435,8 +1546,6 @@ def teen():
         data = curs.fetchall()
         
         data = reversed(data)
-
-
 
         return render_template('teen.html', name=session['logged_in'],value = data)
 
@@ -1479,6 +1588,15 @@ def youth():
 
     except Exception as e:
         return render_template('youth.html', name=session['logged_in'])
+
+
+@app.route("/thank_you/", methods=["GET","POST"])
+def thank_you():
+    return render_template('thankyou.html')
+
+@app.route("/thank_you1/", methods=["GET","POST"])
+def thank_you1():
+    return render_template('thankyou1.html')
 
 
 @app.errorhandler(404)

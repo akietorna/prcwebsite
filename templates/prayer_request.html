@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/users.css')}}">
+    </head>
+    {%extends 'admin.html'%}
+    <body >
+        
+        {%block body%}
+
+            <h3 style="margin-top: 70px; text-align: center;"><strong>List Announcents</strong></h3>
+
+
+            <table>
+                <thead >
+                    <tr>
+                        <th>Id_number</th>
+                        <th>Sender/Author </th>
+                        <th> Time_sent </th>
+                        <th> Testimony </th>
+                        <th> Contact </th>
+                        
+                        
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    {% for row in value %}
+                    
+                    <tr>
+                        
+                        <td> {{row[0]}} </td>
+                        <td> {{row[1]}} </td>
+                        <td> {{row[2]}} </td>
+                        <td> {{row[3]}} </td>
+                        <td> {{row[4]}} </td>
+                       
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+            
+        {%endblock%}
+
+        
+    </body>
+</html>

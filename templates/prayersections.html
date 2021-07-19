@@ -1,96 +1,17 @@
 <!DOCTYPE html> 
 <html>
-    <head>
-      <meta charset="utf-8">
-      <title>PRC, we are moving forward</title>
-      <link rel="stylesheet" href="{{url_for('static', filename='css/prayersections.css')}}">
-      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
-      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-      <meta name="viewport" content="width='device-width' initial-scale=1">
-      <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
-      
-        
-    </head>
+
 
     {% extends "navigation.html" %}
 
-    <body>
+
+    {% block content %}
+
+
+    <body style="text-align: center; background-color: rgb(224, 250, 162);">
       
-      {% block content %}
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
+      
 
-
-
-      <h2><strong>Welcome to the prayersections part of the website </strong></h2>
-
-      <br>
-      <br>
-
-      <div class="container col-lg-9 col-md-9 col-sm-9 col-xs-9">
-     <!-- Slideshow container -->
-      <div class="slideshow-container">
-
-        <!-- Full-width images with number and caption text -->
-        <div class="mySlides fade">
-          <div class="numbertext">1 / 5</div>
-          <img src="{{url_for('static', filename='images/prayer-is-not-a-spare-wheel.jpg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">2 / 5</div>
-          <img src="{{url_for('static', filename='images/intercession.jpg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">3 / 5</div>
-          <img src="{{url_for('static', filename='images/sorenkierkegaard1-2x.jpg') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">4 / 5</div>
-          <img src="{{url_for('static', filename='images/prayer-quotes.png') }}" style="width:100%">
-          
-        </div>
-
-        <div class="mySlides fade">
-          <div class="numbertext">5 / 5</div>
-          <img src="{{url_for('static', filename='images/2978.jpg') }}" style="width:100%">
-          
-        </div>
-
-      </div>
-      <br>
-
-      <!-- The dots/circles -->
-      <div style="text-align:center">
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-        <span class="dot" ></span>
-      </div>
-      </div>
-
-      <div class="container">
-        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-  
-        <label for="message"  id="mess"> <h4>Send a message</h4>  </label>
-        <br>
-        <textarea name="message" id="message" cols="70" rows="5" placeholder="Kindly type your problem inside this box"></textarea>
-        <br>
-        <br>{% extends "navigation.html" %}
-
-
-
-        <body style="text-align: center; background-color: rgb(149, 145, 248);">
-            {% block content %}
         
             <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
                 <br>
@@ -100,7 +21,7 @@
                 <br>
         
         
-                <h4><strong><u>Prayer Request</u></strong> </h4>
+                <h4><strong><u>Send A Prayer Request</u></strong> </h4>
         
         
                 
@@ -109,8 +30,9 @@
                         <dl>
                             
                             {{ render_field(form.sender_name) }}
-                            {{ render_field(form.prayer) }}
                             {{ render_field(form.contact) }}
+                            {{ render_field(form.prayer) }}
+                            
                         </dl>
         
                         <p><input style="background-color: rgb(185, 137, 230); color: white;" type="submit" value="Submit Post" ></p>
@@ -120,21 +42,10 @@
                     {% endif %}
             </div>
         
-            {% endblock %}
-            </body>
-        
-        
-        
-        
-  
-        <button class="btn btn-outline-success my-2 my-sm-0" id="buttton" type="submit">Submit your message</button>
-  
-      </div>
-    </div>
-          {% endblock %}
+          
         
     </body>
 
-    
+    {% endblock %}
     
 </html>

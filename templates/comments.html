@@ -1,0 +1,66 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>PRC, we are moving forward</title>
+      <link rel="stylesheet" href="{{url_for('static', filename='css/prayersections.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+      <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+      <meta name="viewport" content="width='device-width' initial-scale=1">
+      <link rel="shortcut icon" href="{{url_for('static', filename='images/download.ico')}}">
+      
+        
+    </head>
+
+    {% extends "navigation.html" %}
+
+    <body>
+      
+      {% block content %}
+
+        <body style="text-align: center; background-color: rgb(149, 145, 248);">
+            
+        
+            <div class="container col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center;">
+                <br>
+                <br>
+                <br>
+        
+                <br>
+        
+        
+                <h4><strong><u>Prayer Request</u></strong> </h4>
+        
+        
+                
+                {% from "_formhelpers.html" import render_field %}
+                    <form method="POST"  action="" role="">
+                        <dl>
+                            
+                            {{ render_field(form.sender_name) }}
+                            {{ render_field(form.comments) }}
+                            {{ render_field(form.contact) }}
+                        </dl>
+        
+                        <p><input style="background-color: rgb(185, 137, 230); color: white;" type="submit" value="Submit Post" ></p>
+                    </form>
+                    {% if error %}
+                        <p class="error"><strong>Error:</strong> {{error}} </p>
+                    {% endif %}
+            </div>
+        
+            </body>
+        
+        
+  
+      </div>
+    </div>
+
+    </body>
+          {% endblock %}
+        
+    
+
+    
+    
+</html>
