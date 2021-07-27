@@ -579,7 +579,7 @@ def admin():
 
 
 @app.route('/users/',methods=['GET', 'POST'])
-@logged_in_required
+@login_required
 def users():
     error=''
     try:
@@ -590,12 +590,12 @@ def users():
         return render_template("users.html", value = data)
 
     except Exception as e:
-            return render_template('admin1.html', error = error , name=session['admin'])
+            return render_template('admin1.html', error = error , name=session['logged_in'])
 
 
 
 @app.route('/add_users/', methods=['GET','POST'])
-@logged_in_required
+@login_required
 def add_users():
 
     form = RegistrationForm(request.form)
@@ -646,7 +646,7 @@ def add_users():
 
             return redirect(url_for("users"))
 
-    return render_template("add.html", form=form, name=session['admin'])
+    return render_template("add.html", form=form, name=session['logged_in'])
 
 
 @app.route('/delete_user/', methods=["GET", "POST"])
