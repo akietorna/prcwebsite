@@ -12,7 +12,7 @@ def connection():
     connect = MySQLdb.connect( host = 'ekagbodjive.mysql.pythonanywhere-services.com',
                               user = 'ekagbodjive',
                               passwd = 'hispresence123@',
-                              name = "ekagbodjive$default")
+                              db = "ekagbodjive$default")
 # innitializing the cursor 
     curs = connect.cursor()
 
