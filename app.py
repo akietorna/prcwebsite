@@ -634,8 +634,8 @@ def add_users():
 
 
             # inserting statements into the database
-            input_statement = ("INSERT INTO users (firstname,lastname, sex, username, email, password) VALUES (%s, %s, %s, %s, %s, %s)" ) 
-            data = (thwart(firstname), thwart(lastname), thwart(sex), thwart(username), thwart(email), thwart(password) )
+            input_statement = ("INSERT INTO administration (admin_name, username, password) VALUES (%s, %s, %s, %s, %s, %s)" ) 
+            data = (thwart(firstname), thwart(username),  thwart(password) )
             curs.execute( input_statement, data)
 
             connect.commit()
@@ -724,7 +724,7 @@ def get_comment():
     error=''
     try:
         curs, connect = connection()
-        curs.execute('SELECT * comments')
+        curs.execute('SELECT * from comments')
         data = curs.fetchall()
         
         data = reversed(data)
@@ -901,7 +901,8 @@ def prayer1():
         return render_template('prayer1.html',  value = data)
 
     except Exception as e:
-        return render_template('prayer1.html', name=session['logged_in'])
+        error = "please it did not work"
+        return render_template('prayer1.html',error = error, name=session['logged_in'])
 
 
 @app.route('/viewbook/',methods=["GET","POST"])
