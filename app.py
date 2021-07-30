@@ -31,10 +31,10 @@ def confirm_email():
     port = 465
     stmp_server = "smtp.gmail.com"
     
-    sender_email = "pentecostalrevivalcenterag@gmail.com"
+    sender_email = "akietorna@gmail.com"
     receiver_email = str(session["email"])
     name = session['lastname']
-    password = "revmoses1954"
+    password = "hispresence"
 
     confirmation_code = ""
     for a in range(0,7):
@@ -535,7 +535,7 @@ def admin():
             password = request.form['password']
 
             curs, connect = connection()
-            info = curs.execute("SELECT * FROM administration WHERE username = %s", [username])
+            info = curs.execute("SELECT * FROM users WHERE username = %s", [username])
 
 
 
