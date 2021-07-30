@@ -634,7 +634,7 @@ def add_users():
 
 
             # inserting statements into the database
-            input_statement = ("INSERT INTO administration (admin_name, username, password) VALUES (%s, %s, %s, %s, %s, %s)" ) 
+            input_statement = ("INSERT INTO administration (admin_name, username, password) VALUES (%s, %s, %s)" ) 
             data = (thwart(firstname), thwart(username),  thwart(password) )
             curs.execute( input_statement, data)
 
