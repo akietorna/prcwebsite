@@ -550,7 +550,7 @@ def admin():
             
 
             if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['admin'] = True
+                session['logged_in'] = True
                 session['username'] = request.form['username']
 
                 print("it worked")
