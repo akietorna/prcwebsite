@@ -339,7 +339,7 @@ def addtestimony():
 
         return redirect(url_for('testimony'))
 
-    return render_template("addtestimony.html", form=form, name=session['admin'])
+    return render_template("addtestimony.html", form=form, name=session['logged_in'])
 
 
 @app.route("/add_announcement/", methods=["POST", "GET"])
