@@ -535,7 +535,7 @@ def admin():
             password = request.form['password']
 
             curs, connect = connection()
-            info = curs.execute("SELECT * FROM users WHERE username = %s", [username])
+            info = curs.execute("SELECT * FROM administration WHERE username = %s", [username])
 
 
 
@@ -550,7 +550,7 @@ def admin():
             
 
             if info == 1 and bcrypt.check_password_hash(Passwd,password ) == True :
-                session['logged_in'] = True
+                session['admin'] = True
                 session['username'] = request.form['username']
 
                 print("it worked")
@@ -579,7 +579,7 @@ def admin():
 
 
 @app.route('/users/',methods=['GET', 'POST'])
-@login_required
+@logged_in_required
 def users():
     error=''
     try:
@@ -590,12 +590,12 @@ def users():
         return render_template("users.html", value = data)
 
     except Exception as e:
-            return render_template('admin1.html', error = error , name=session['logged_in'])
+            return render_template('admin1.html', error = error , name=session['admin'])
 
 
 
 @app.route('/add_users/', methods=['GET','POST'])
-@login_required
+@logged_in_required
 def add_users():
 
     form = RegistrationForm(request.form)
@@ -634,8 +634,8 @@ def add_users():
 
 
             # inserting statements into the database
-            input_statement = ("INSERT INTO administration (admin_name, username, password) VALUES (%s, %s, %s)" ) 
-            data = (thwart(firstname), thwart(username),  thwart(password) )
+            input_statement = ("INSERT INTO administration (firstname, lastname,sex,username,email, password) VALUES (%s, %s, %s, %s, %s, %s)" ) 
+            data = (thwart(firstname), thwart(lastname), thwart(sex),  thwart(username),thwart(email),  thwart(password) )
             curs.execute( input_statement, data)
 
             connect.commit()
@@ -646,7 +646,7 @@ def add_users():
 
             return redirect(url_for("users"))
 
-    return render_template("add.html", form=form, name=session['logged_in'])
+    return render_template("add.html", form=form, name=session['admin'])
 
 
 @app.route('/delete_user/', methods=["GET", "POST"])
