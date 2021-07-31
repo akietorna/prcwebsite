@@ -1354,7 +1354,7 @@ def inspirationalbooks():
 
                     sermon = "/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/" + filename
 
-                    files = "/static/books/inspirationalbooks/" + filename
+                    files = "/prcwebsite/static/books/inspirationalbooks/" + filename
 
                     curs,connect = connection()
                     
