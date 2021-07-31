@@ -1019,13 +1019,13 @@ def allowed_book_types(filename):
         return False
 
 
-app.config['AUDIO_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/sermon/"
-app.config['SUNDAYSCH_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/sundaysch/"
-app.config['INSPIRATION_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/"
-app.config['SPIRITUAL_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/spirituallife/"
-app.config['HEALTH_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/health/"
-app.config['PRAYER_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/prayer/"
-app.config['MARRIAGE_UPLOADS']= "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/marriage/"
+app.config['AUDIO_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/sermon/"
+app.config['SUNDAYSCH_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/sundaysch/"
+app.config['INSPIRATION_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/"
+app.config['SPIRITUAL_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/spirituallife/"
+app.config['HEALTH_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/health/"
+app.config['PRAYER_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/prayer/"
+app.config['MARRIAGE_UPLOADS']= "/home/ekagbodjive/prcwebsite/static/books/marriage/"
 app.config['ALLOWED_AUDIO_EXTENTIONS']= ['MP3', 'WMA', 'AAC', 'WAV', 'FLAC']
 app.config['ALLOWED_BOOK_EXTENTIONS']=["PDF"]
 
@@ -1051,9 +1051,9 @@ def spiritualbooks():
 
                     sender_name = session['username']
 
-                    location = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/spirituallife/" + filename
+                    location = "/home/ekagbodjive/prcwebsite/static/books/spirituallife/" + filename
 
-                    files = "books/spirituallife/" + filename
+                    files = "/books/spirituallife/" + filename
 
                     curs,connect = connection()
                     
@@ -1101,9 +1101,9 @@ def marriagebooks():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/marriage/"+ filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/books/marriage/"+ filename
 
-                    files = "books/marriage/" + filename
+                    files = "/books/marriage/" + filename
                     
                     curs,connect = connection()
                     
@@ -1152,9 +1152,9 @@ def sermons():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/sermon/"+ filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/sermon/"+ filename
 
-                    files = "sermon/" + filename
+                    files = "/sermon/" + filename
 
                     curs,connect = connection()
                     
@@ -1202,9 +1202,9 @@ def sundayschool1():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/sundaysch/" + filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/books/sundaysch/" + filename
 
-                    files = "books/sundaysch/" + filename
+                    files = "/books/sundaysch/" + filename
 
                     curs,connect = connection()
                     
@@ -1253,9 +1253,9 @@ def prayerbooks():
 
                     sender_name = session['username']
 
-                    sermon =  "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/prayer/" + filename
+                    sermon =  "/home/ekagbodjive/prcwebsite/static/books/prayer/" + filename
 
-                    files = "books/prayer/" + filename
+                    files = "/books/prayer/" + filename
                     curs,connect = connection()
                     
 
@@ -1303,7 +1303,7 @@ def healthbooks():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/health/" + filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/books/health/" + filename
 
                     files = "books/health/" + filename
 
@@ -1352,9 +1352,9 @@ def inspirationalbooks():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/" + filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks/" + filename
 
-                    files = "books/inspirationalbooks/" + filename
+                    files = "/books/inspirationalbooks/" + filename
 
                     curs,connect = connection()
                     
