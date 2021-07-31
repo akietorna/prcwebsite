@@ -31,9 +31,9 @@
           {% for row in value %}
             
 
-                <div class="messaging col-lg-2 col-md-6 col-sm-12 col-xs-12">
-                  <h6 style="text-align:center; color: white; background-color: rgb(5, 5, 99);">{{row[1]}}</h6>
+                <div class="messaging col-lg-4 col-md-6 col-sm-12 col-xs-12">
                     <a class="prayer" href="/viewbook/?id={{row[0]}}"><img style="height: 150px;width: 150px;" src="{{url_for('static', filename='images/mypdfs.jpeg') }}" alt= {{row[1]}}></a>
+                    <h6 style="text-align:center;">{{row[1]}}</h6>
                   <br>
                     
                 </div>
