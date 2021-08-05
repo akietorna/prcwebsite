@@ -917,7 +917,7 @@ def viewbook():
         return render_template('downloads.html',name=session['logged_in'], value=data)
 
     except Exception as e:
-        return render_template('prayer1.html', name=session['logged_in'])
+        return render_template('downloads.html', name=session['logged_in'])
 
 @app.route('/download/',methods=["GET","POST"])
 @login_required
