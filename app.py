@@ -1352,7 +1352,7 @@ def inspirationalbooks():
 
                     sender_name = session['username']
 
-                    sermon = "https://www.pythonanywhere.com/user/ekagbodjive/files/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks" + filename
+                    sermon = "/home/ekagbodjive/prcwebsite/static/books/inspirationalbooks" + filename
 
                     files = "books/inspirationalbooks/" + filename
 
