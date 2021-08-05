@@ -923,6 +923,7 @@ def viewbook():
 @login_required
 def download():
     path=request.args.get('id')
+    print(path)
     return send_file(path,as_attachment=True)
 
 
