@@ -31,10 +31,10 @@ def confirm_email():
     port = 465
     stmp_server = "smtp.gmail.com"
     
-    sender_email = "akietorna@gmail.com"
+    sender_email = "pentecostalrevivalcenterag@gmail.com"
     receiver_email = str(session["email"])
     name = session['lastname']
-    password = "hispresence"
+    password = "revmoses1954"
 
     confirmation_code = ""
     for a in range(0,7):
