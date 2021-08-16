@@ -5,9 +5,9 @@
 }
 
 body{
-    background-image: url('/static/images/003.3.jpg');
+    background-image: url('/static/images/signup.jpg');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: auto;
     text-align: center;
     font-family: cursive;
 }
